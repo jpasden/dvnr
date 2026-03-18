@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Admin — DVNR{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>Admin — Texts</h1>
+    <div style="display:flex;gap:0.5rem;align-items:center;">
+      <form method="POST" action="/admin/publish-all" style="display:inline"
+            onsubmit="return confirm('Regenerate all published JSON files and index pages?')">
+        <button type="submit" class="btn btn-small">Publish All</button>
+      </form>
+      <a href="/admin/new" class="btn btn-primary">+ Add New Text</a>
+    </div>
+  </div>
+
+  {% if texts %}
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Lang</th>
+        <th>Words</th>
+        <th>Published</th>
+        <th>Created</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for text in texts %}
+      <tr>
+        <td>
+          <strong>{{ text.title }}</strong>
+          {% if text.slug %}<br><small style="color:#999;font-family:monospace;">{{ text.slug }}</small>{% endif %}
+        </td>
+        <td>{{ text.author or '—' }}</td>
+        <td><span class="lang-badge lang-{{ text.language }}">{{ text.language | upper }}</span></td>
+        <td>{{ text.word_count or '—' }}</td>
+        <td>
+          {% if text.published_at %}
+            <span style="color:#155724;cursor:default;" title="{{ (text.published_at | add_hours(8)).strftime('%Y-%m-%d %H:%M:%S') }} CST">✓ {{ text.published_at.strftime('%Y-%m-%d') }}</span>
+          {% else %}
+            <span style="color:#999;">Draft</span>
+          {% endif %}
+        </td>
+        <td><span style="cursor:default;" title="{{ (text.created_at | add_hours(8)).strftime('%Y-%m-%d %H:%M:%S') }} CST">{{ text.created_at.strftime('%Y-%m-%d') }}</span></td>
+        <td class="admin-actions">
+          <a href="/admin/confirm/{{ text.id }}" class="btn btn-small">Confirm/Edit</a>
+          <form method="POST" action="/admin/publish/{{ text.id }}" style="display:inline">
+            <button type="submit" class="btn btn-small btn-primary">Publish</button>
+          </form>
+          <form method="POST" action="/admin/delete/{{ text.id }}" style="display:inline"
+                onsubmit="return confirm('Delete \&quot;{{ text.title | replace('&quot;','') }}\&quot;? This cannot be undone.')">
+            <button type="submit" class="btn btn-small btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-state">No texts yet. <a href="/admin/new">Add the first one.</a></p>
+  {% endif %}
+</div>
+{% endblock %}

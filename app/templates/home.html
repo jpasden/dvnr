@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}DVNR — Dynamic Vocabulary Notes Reader{% endblock %}
+
+{% block content %}
+<div class="home-container">
+  <section class="paste-section">
+    <h1>Read Spanish &amp; Italian with instant vocabulary notes</h1>
+    <p class="subtitle">Paste any text below. Click words while reading to build a vocabulary notes panel you can print.</p>
+
+    <form id="parse-form" method="POST" action="/parse">
+      <div class="lang-row">
+        <label>Language:</label>
+        <div class="lang-toggle" id="lang-toggle">
+          <button type="button" class="lang-btn active" data-lang="es">ES</button>
+          <button type="button" class="lang-btn" data-lang="it">IT</button>
+        </div>
+        <input type="hidden" name="lang" id="lang-input" value="es">
+        <span class="detect-status" id="detect-status"></span>
+      </div>
+
+      <textarea
+        id="paste-area"
+        name="raw_text"
+        placeholder="Paste Spanish or Italian text here…"
+        rows="12"
+        autofocus
+      ></textarea>
+
+      <div class="word-count-row">
+        <span id="word-count-display">0 words</span>
+        <div id="word-count-warning" class="word-warning hidden"></div>
+      </div>
+
+      <button type="submit" id="submit-btn" class="btn btn-primary">Parse &amp; Read →</button>
+    </form>
+  </section>
+
+  {% if texts %}
+  <section class="prepared-texts">
+    <h2>Pre-prepared Texts</h2>
+    <div class="text-cards">
+      {% for text in texts %}
+      <a href="/text/{{ text.id }}" class="text-card">
+        <div class="text-card-lang lang-badge lang-{{ text.language }}">{{ text.language | upper }}</div>
+        <div class="text-card-body">
+          <h3>{{ text.title }}</h3>
+          {% if text.author %}<p class="text-card-author">{{ text.author }}</p>{% endif %}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</div>
+
+<!-- Loading overlay -->
+<div id="loading-overlay" class="loading-overlay hidden">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <p>Parsing your text… this may take several minutes for longer passages.</p>
+    <p class="loading-timer" id="loading-timer">0s</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  const textarea = document.getElementById('paste-area');
+  const wordCountDisplay = document.getElementById('word-count-display');
+  const wordCountWarning = document.getElementById('word-count-warning');
+  const submitBtn = document.getElementById('submit-btn');
+  const langInput = document.getElementById('lang-input');
+  const langToggle = document.getElementById('lang-toggle');
+  const detectStatus = document.getElementById('detect-status');
+  const form = document.getElementById('parse-form');
+  const overlay = document.getElementById('loading-overlay');
+
+  let detectTimeout = null;
+
+  function countWords(text) {
+    return text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+  }
+
+  function updateWordCount() {
+    const text = textarea.value;
+    const count = countWords(text);
+    wordCountDisplay.textContent = count + ' word' + (count === 1 ? '' : 's');
+
+    wordCountWarning.classList.remove('hidden', 'warning-amber', 'warning-red');
+
+    if (count > 1000) {
+      wordCountWarning.classList.remove('hidden');
+      wordCountWarning.classList.add('warning-red');
+      wordCountWarning.textContent = 'Text too long (' + count + ' words). Please paste 1,000 words or fewer.';
+      submitBtn.disabled = true;
+    } else if (count > 500) {
+      wordCountWarning.classList.remove('hidden');
+      wordCountWarning.classList.add('warning-amber');
+      wordCountWarning.textContent = 'Long text detected (~' + count + ' words). Parsing may take 30+ seconds.';
+      submitBtn.disabled = false;
+    } else {
+      submitBtn.disabled = false;
+    }
+  }
+
+  function setLanguage(lang) {
+    langInput.value = lang;
+    langToggle.querySelectorAll('.lang-btn').forEach(function (btn) {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+  }
+
+  langToggle.addEventListener('click', function (e) {
+    if (e.target.classList.contains('lang-btn')) {
+      setLanguage(e.target.dataset.lang);
+    }
+  });
+
+  textarea.addEventListener('input', function () {
+    updateWordCount();
+
+    // Auto-detect language after short pause
+    clearTimeout(detectTimeout);
+    const text = textarea.value.trim();
+    if (text.length < 20) return;
+
+    detectTimeout = setTimeout(function () {
+      const formData = new FormData();
+      formData.append('raw_text', text);
+      detectStatus.textContent = 'Detecting…';
+      fetch('/detect-language', { method: 'POST', body: formData })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          setLanguage(data.language);
+          detectStatus.textContent = 'Auto-detected: ' + data.language.toUpperCase();
+          setTimeout(function () { detectStatus.textContent = ''; }, 2000);
+        })
+        .catch(function () { detectStatus.textContent = ''; });
+    }, 600);
+  });
+
+  form.addEventListener('submit', function (e) {
+    if (submitBtn.disabled) {
+      e.preventDefault();
+      return;
+    }
+    overlay.classList.remove('hidden');
+    var timerEl = document.getElementById('loading-timer');
+    var seconds = 0;
+    function formatTime(s) {
+      var m = Math.floor(s / 60);
+      var sec = s % 60;
+      return (m < 10 ? '0' : '') + m + ':' + (sec < 10 ? '0' : '') + sec;
+    }
+    if (timerEl) timerEl.textContent = '00:00';
+    setInterval(function () {
+      seconds++;
+      if (timerEl) timerEl.textContent = formatTime(seconds);
+    }, 1000);
+  });
+
+  updateWordCount();
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if title %}{{ title }} — DVNR{% else %}Reader — DVNR{% endif %}
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* Reader page: remove site-main padding so columns fill full width */
+  .site-main { padding: 0; }
+  .reader-layout { padding: 0 1rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="reader-layout">
+
+  <!-- LEFT: text column -->
+  <div class="text-column" id="text-column">
+    <div class="text-controls" id="text-controls">
+      <div class="size-controls">
+        <span class="controls-label">Size:</span>
+        <button class="size-btn" data-size="s">S</button>
+        <button class="size-btn active" data-size="m">M</button>
+        <button class="size-btn" data-size="l">L</button>
+        <button class="size-btn" data-size="xl">XL</button>
+      </div>
+
+      {% if show_language_toggle %}
+      <div class="lang-toggle-reader" id="lang-toggle-reader">
+        <span class="controls-label">Language:</span>
+        <button type="button" class="lang-btn {% if language == 'es' %}active{% endif %}" data-lang="es">ES</button>
+        <button type="button" class="lang-btn {% if language == 'it' %}active{% endif %}" data-lang="it">IT</button>
+      </div>
+      {% endif %}
+
+      <a href="/" class="btn btn-small">← New text</a>
+
+      {% if parse_time %}
+      <span class="parse-time-display">parsed in {{ parse_time }}</span>
+      {% endif %}
+    </div>
+
+    {% if title and is_prepared %}
+    <div class="text-meta">
+      <h2 class="text-title">{{ title }}</h2>
+      {% if author %}<p class="text-author">{{ author }}</p>{% endif %}
+    </div>
+    {% endif %}
+
+    <div class="text-body size-m" id="text-body">
+      {# Rendered by JS from tokens_json #}
+    </div>
+  </div>
+
+  <!-- RIGHT: vocabulary notes column -->
+  <div class="notes-column" id="notes-column">
+    <div class="notes-header">
+      <h2>Vocabulary Notes</h2>
+    </div>
+
+    <div class="notes-reminder" id="notes-reminder">
+      Notes are lost on refresh — print to save.
+    </div>
+
+    <div class="notes-actions" id="notes-actions">
+      <button class="btn btn-small btn-clear" id="clear-all-btn">Clear all</button>
+      <button class="btn btn-small btn-print" id="print-btn" onclick="window.print()">Print</button>
+    </div>
+
+    <ol class="notes-list" id="notes-list">
+      <!-- Notes appended here by JS -->
+    </ol>
+
+    <p class="notes-empty" id="notes-empty">Click any word in the text to add a note.</p>
+  </div>
+
+</div>
+
+<!-- Language re-parse overlay -->
+<div id="loading-overlay" class="loading-overlay hidden">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <p>Re-parsing with new language…</p>
+  </div>
+</div>
+
+<!-- Hidden form for re-parse on language change -->
+<form id="reparse-form" method="POST" action="/parse" style="display:none">
+  <input type="hidden" name="raw_text" id="reparse-raw-text" value="{{ raw_text | e }}">
+  <input type="hidden" name="lang" id="reparse-lang" value="{{ language }}">
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.DVNR_TOKENS = {{ tokens_json | safe }};
+  window.DVNR_LANGUAGE = {{ language | tojson }};
+  window.DVNR_SHOW_LANG_TOGGLE = {{ show_language_toggle | tojson }};
+  window.DVNR_IS_PREPARED = {{ is_prepared | tojson }};
+</script>
+<script src="/static/js/reader.js"></script>
+{% endblock %}

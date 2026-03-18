@@ -1,0 +1,433 @@
+{% extends "base.html" %}
+
+{% block title %}Preview: {{ entry.title }} — Admin — DVNR{% endblock %}
+
+{% block extra_head %}
+<style>
+  .preview-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    padding: 0.6rem 1rem;
+    background: #fffde7;
+    border-bottom: 1px solid #ffe082;
+    margin-bottom: 1.25rem;
+    font-family: sans-serif;
+  }
+  .preview-toolbar-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #795548;
+    margin-right: 0.25rem;
+  }
+  .preview-section {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .preview-section h2 {
+    font-family: sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #555;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+  }
+  .chunk-editor-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .chunk-line-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .chunk-line-input {
+    flex: 1;
+    font-family: 'Arial Unicode MS', Arial, sans-serif;
+    font-size: 1rem;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fafafa;
+  }
+  .chunk-line-input:focus {
+    outline: none;
+    border-color: #2a6496;
+    box-shadow: 0 0 0 2px rgba(42,100,150,0.12);
+    background: #fff;
+  }
+  .token-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: sans-serif;
+    font-size: 0.85rem;
+  }
+  .token-table th {
+    text-align: left;
+    padding: 0.4rem 0.6rem;
+    background: #f5f5f5;
+    border-bottom: 2px solid #ddd;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #555;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  .token-table td {
+    padding: 0.35rem 0.6rem;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+  }
+  .token-table tr:hover td {
+    background: #fafafa;
+  }
+  .token-table input[type="text"],
+  .token-table select {
+    width: 100%;
+    padding: 0.25rem 0.4rem;
+    font-family: inherit;
+    font-size: 0.85rem;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background: #fff;
+  }
+  .token-table input[type="text"]:focus,
+  .token-table select:focus {
+    outline: none;
+    border-color: #2a6496;
+  }
+  .tok-surface {
+    font-family: 'Arial Unicode MS', Arial, sans-serif;
+    font-weight: 600;
+    color: #1a1a2e;
+    white-space: nowrap;
+  }
+  .tok-chunk-badge {
+    display: inline-block;
+    background: #e8f4f8;
+    color: #2a6496;
+    border-radius: 3px;
+    padding: 0.1rem 0.35rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+  .edited-badge {
+    display: inline-block;
+    background: #fff3cd;
+    color: #856404;
+    border-radius: 3px;
+    padding: 0.1rem 0.35rem;
+    font-size: 0.72rem;
+    margin-left: 0.25rem;
+  }
+  .reader-preview-wrap {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .inline-reader {
+    padding: 1rem 1.5rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Toolbar -->
+<div class="preview-toolbar">
+  <span class="preview-toolbar-label">Admin Preview</span>
+  <a href="/admin" class="btn btn-small">← All texts</a>
+  {% if entry.published_at %}
+  <span style="font-family:sans-serif;font-size:0.82rem;color:#155724;margin-left:0.5rem;">
+    Published {{ entry.published_at.strftime('%Y-%m-%d') }}
+  </span>
+  {% else %}
+  <span style="font-family:sans-serif;font-size:0.82rem;color:#999;margin-left:0.5rem;">Draft (not published)</span>
+  {% endif %}
+  {% if edited_count %}
+  <span style="font-family:sans-serif;font-size:0.82rem;color:#856404;">{{ edited_count }} token edit(s)</span>
+  {% endif %}
+  {% if parse_time %}
+  <span style="font-family:sans-serif;font-size:0.82rem;color:#888;">parsed in {{ parse_time }}</span>
+  {% endif %}
+  <div style="margin-left:auto;display:flex;gap:0.5rem;">
+    <form method="POST" action="/admin/publish/{{ entry.id }}" style="display:inline">
+      <button type="submit" class="btn btn-small btn-primary">Publish →</button>
+    </form>
+  </div>
+</div>
+
+<div style="max-width:1200px;margin:0 auto;">
+
+<!-- =========================================================
+     Section 1: Metadata editor
+     ========================================================= -->
+<div class="preview-section">
+  <h2>Metadata</h2>
+  <form method="POST" action="/admin/save/{{ entry.id }}" id="metadata-form">
+    <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:1rem;align-items:end;">
+      <div class="form-group" style="margin-bottom:0;">
+        <label for="meta-title">Title</label>
+        <input type="text" id="meta-title" name="title" value="{{ entry.title }}" required>
+      </div>
+      <div class="form-group" style="margin-bottom:0;">
+        <label for="meta-author">Author <span class="optional">(optional)</span></label>
+        <input type="text" id="meta-author" name="author" value="{{ entry.author or '' }}">
+      </div>
+      <div class="form-group" style="margin-bottom:0;">
+        <label>Language</label>
+        <div class="lang-toggle" id="meta-lang-toggle">
+          <button type="button" class="lang-btn {% if entry.language == 'es' %}active{% endif %}" data-lang="es">ES</button>
+          <button type="button" class="lang-btn {% if entry.language == 'it' %}active{% endif %}" data-lang="it">IT</button>
+        </div>
+        <input type="hidden" name="language" id="meta-language-input" value="{{ entry.language }}">
+      </div>
+    </div>
+    <div class="form-actions" style="margin-top:1rem;">
+      <button type="submit" class="btn btn-primary btn-small">Save metadata</button>
+    </div>
+  </form>
+</div>
+
+<!-- =========================================================
+     Section 2: Re-parse controls
+     ========================================================= -->
+<div class="preview-section">
+  <h2>Re-parse</h2>
+  <p style="font-family:sans-serif;font-size:0.875rem;color:#555;margin-bottom:1rem;">
+    Re-run the Claude parser on this text. "Smart re-parse" preserves your token edits and only refreshes the base parse.
+    "Full re-parse" wipes all edits and starts fresh.
+  </p>
+  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+    <form method="POST" action="/admin/republish/{{ entry.id }}">
+      <input type="hidden" name="full_reparse" value="0">
+      <button type="submit" class="btn btn-small">Smart re-parse (keep edits)</button>
+    </form>
+    <form method="POST" action="/admin/republish/{{ entry.id }}"
+          onsubmit="return confirm('This will wipe ALL token edits and re-parse from scratch. Continue?')">
+      <input type="hidden" name="full_reparse" value="1">
+      <button type="submit" class="btn btn-small btn-danger">Full re-parse (wipe edits)</button>
+    </form>
+  </div>
+</div>
+
+<!-- =========================================================
+     Section 3: Reader preview (read-only, interactive)
+     ========================================================= -->
+<div class="preview-section">
+  <h2>Reader Preview</h2>
+  <p style="font-family:sans-serif;font-size:0.82rem;color:#888;margin-bottom:1rem;">
+    Click words to see how notes will appear. This is a live preview.
+  </p>
+  <div class="reader-layout inline-reader" style="border:none;padding:0;">
+    <div class="text-column" id="text-column" style="border-right:1px solid #ddd;padding-right:1.5rem;">
+      <div class="text-controls" style="margin-bottom:0.75rem;">
+        <div class="size-controls">
+          <span class="controls-label">Size:</span>
+          <button class="size-btn" data-size="s">S</button>
+          <button class="size-btn active" data-size="m">M</button>
+          <button class="size-btn" data-size="l">L</button>
+          <button class="size-btn" data-size="xl">XL</button>
+        </div>
+        <span class="lang-badge lang-{{ entry.language }}" style="margin-left:0.5rem;">{{ entry.language | upper }}</span>
+      </div>
+      <div class="text-meta">
+        <h2 class="text-title">{{ entry.title }}</h2>
+        {% if entry.author %}<p class="text-author">{{ entry.author }}</p>{% endif %}
+      </div>
+      <div class="text-body size-m" id="text-body"></div>
+    </div>
+    <div class="notes-column" id="notes-column" style="padding-left:1.5rem;">
+      <div class="notes-header"><h2>Vocabulary Notes</h2></div>
+      <div class="notes-reminder" id="notes-reminder">Click words to add notes.</div>
+      <div class="notes-actions" id="notes-actions">
+        <button class="btn btn-small btn-clear" id="clear-all-btn">Clear all</button>
+        <button class="btn btn-small btn-print" onclick="window.print()">Print</button>
+      </div>
+      <ol class="notes-list" id="notes-list"></ol>
+      <p class="notes-empty" id="notes-empty">Click any word in the text to add a note.</p>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     Section 4: Definition editor
+     ========================================================= -->
+<div class="preview-section">
+  <h2>Definition &amp; Token Editor</h2>
+  <p style="font-family:sans-serif;font-size:0.82rem;color:#888;margin-bottom:1rem;">
+    Edit lemmas, POS tags, and definitions for individual tokens. Only content words are shown (punctuation and spaces are hidden).
+    Click "Save all edits" to persist your changes.
+  </p>
+  <form method="POST" action="/admin/save/{{ entry.id }}" id="token-edit-form">
+    <!-- Hidden metadata fields so save doesn't clobber them -->
+    <input type="hidden" name="title" value="{{ entry.title }}">
+    <input type="hidden" name="author" value="{{ entry.author or '' }}">
+    <input type="hidden" name="language" value="{{ entry.language }}">
+
+    <div style="overflow-x:auto;">
+      <table class="token-table" id="token-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Surface</th>
+            <th>POS</th>
+            <th>Lemma</th>
+            <th>Definition (lemma)</th>
+            <th>Definition (surface/conjugation)</th>
+            <th>Chunk</th>
+            <th>Chunk definition</th>
+          </tr>
+        </thead>
+        <tbody id="token-table-body">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="form-actions" style="margin-top:1rem;">
+      <button type="submit" class="btn btn-primary">Save all edits</button>
+      <a href="/admin/preview/{{ entry.id }}" class="btn btn-small">Cancel / reload</a>
+    </div>
+  </form>
+</div>
+
+</div><!-- /max-width wrapper -->
+
+<!-- Loading overlay for re-parse actions -->
+<div id="loading-overlay" class="loading-overlay hidden">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <p>Re-parsing with Claude… please wait.</p>
+    <p id="parse-stopwatch" class="loading-timer">00:00</p>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.DVNR_TOKENS = {{ tokens_json | safe }};
+  window.DVNR_LANGUAGE = {{ language | tojson }};
+  window.DVNR_SHOW_LANG_TOGGLE = false;
+  window.DVNR_IS_PREPARED = true;
+</script>
+<script src="/static/js/reader.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ----- Metadata lang toggle -----
+  const metaLangToggle = document.getElementById('meta-lang-toggle');
+  const metaLangInput = document.getElementById('meta-language-input');
+  if (metaLangToggle) {
+    metaLangToggle.addEventListener('click', function (e) {
+      if (!e.target.classList.contains('lang-btn')) return;
+      const lang = e.target.dataset.lang;
+      metaLangInput.value = lang;
+      metaLangToggle.querySelectorAll('.lang-btn').forEach(function (b) {
+        b.classList.toggle('active', b.dataset.lang === lang);
+      });
+    });
+  }
+
+  // ----- Token table population -----
+  const tokens = window.DVNR_TOKENS || [];
+  const tbody = document.getElementById('token-table-body');
+
+  // Track which tokens have been edited server-side (by checking initial values)
+  // We just use idx as the key in the form fields.
+
+  const POS_OPTIONS = [
+    'VERB','NOUN','ADJ','ADV','ADP','CONJ','DET','PRON','PROPN',
+    'NUM','INTJ','AUX','PUNCT','SPACE',''
+  ];
+
+  function escHtml(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function makePosSelect(idx, currentPos) {
+    let html = '<select name="token_' + idx + '_pos">';
+    POS_OPTIONS.forEach(function (p) {
+      const sel = (p === currentPos) ? ' selected' : '';
+      html += '<option value="' + escHtml(p) + '"' + sel + '>' + (p || '—') + '</option>';
+    });
+    html += '</select>';
+    return html;
+  }
+
+  if (tbody) {
+    // Build a map of chunk_id -> surface text for the chunk column display
+    const chunkSurfaces = {};
+    tokens.forEach(function (tok) {
+      if (tok.chunk_id != null && !tok.is_space && !tok.is_punct) {
+        if (!chunkSurfaces[tok.chunk_id]) chunkSurfaces[tok.chunk_id] = [];
+        chunkSurfaces[tok.chunk_id].push(tok.text);
+      }
+    });
+
+    tokens.forEach(function (tok) {
+      if (tok.is_punct || tok.is_space || tok.is_newline) return;
+
+      const idx = tok.idx;
+      const isChunkStart = tok.chunk_id != null && tok.chunk_role === 'start';
+      const chunkText = tok.chunk_id != null ? chunkSurfaces[tok.chunk_id].join(' ') : '';
+
+      const tr = document.createElement('tr');
+      tr.dataset.idx = idx;
+
+      // Only show chunk_definition field on chunk start tokens
+      const chunkDefField = (tok.chunk_id != null && tok.chunk_role === 'start')
+        ? '<input type="text" name="token_' + idx + '_chunk_definition" value="' + escHtml(tok.chunk_definition || '') + '" placeholder="chunk meaning…">'
+        : (tok.chunk_id != null ? '<span style="color:#bbb;font-size:0.8rem;">—</span>' : '');
+
+      tr.innerHTML =
+        '<td style="color:#aaa;font-family:monospace;font-size:0.8rem;">' + idx + '</td>' +
+        '<td class="tok-surface">' + escHtml(tok.text) +
+          (tok.is_title ? '<span class="edited-badge">title</span>' : '') +
+        '</td>' +
+        '<td>' + makePosSelect(idx, tok.pos || '') + '</td>' +
+        '<td><input type="text" name="token_' + idx + '_lemma" value="' + escHtml(tok.lemma || '') + '"></td>' +
+        '<td><input type="text" name="token_' + idx + '_definition_lemma" value="' + escHtml(tok.definition_lemma || '') + '" placeholder="English meaning…"></td>' +
+        '<td><input type="text" name="token_' + idx + '_definition_surface" value="' + escHtml(tok.definition_surface || '') + '" placeholder="e.g. 3rd pl. preterite"></td>' +
+        '<td>' + (chunkText ? '<span class="tok-chunk-badge">' + escHtml(chunkText) + '</span>' : '<span style="color:#ccc;">—</span>') + '</td>' +
+        '<td>' + chunkDefField + '</td>';
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  // ----- Re-parse form: show loading overlay with stopwatch -----
+  document.querySelectorAll('form[action*="/republish/"]').forEach(function (form) {
+    form.addEventListener('submit', function () {
+      const overlay = document.getElementById('loading-overlay');
+      if (overlay) overlay.classList.remove('hidden');
+      const stopwatch = document.getElementById('parse-stopwatch');
+      if (stopwatch) {
+        var seconds = 0;
+        setInterval(function () {
+          seconds++;
+          var m = Math.floor(seconds / 60);
+          var s = seconds % 60;
+          stopwatch.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+        }, 1000);
+      }
+    });
+  });
+
+})();
+</script>
+{% endblock %}
