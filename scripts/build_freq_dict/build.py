@@ -26,6 +26,7 @@ import re
 import sys
 import urllib.request
 from pathlib import Path
+from typing import Optional
 
 import anthropic
 
@@ -169,7 +170,7 @@ async def fetch_batch(
     client: anthropic.AsyncAnthropic,
     words: list[str],
     lang_name: str,
-) -> dict[str, str | None]:
+) -> dict[str, Optional[str]]:
     """Call Claude Haiku for one batch, return {word: definition_or_null}."""
     word_list = "\n".join(f"- {w}" for w in words)
     prompt = f"Words to define ({lang_name}):\n{word_list}"
