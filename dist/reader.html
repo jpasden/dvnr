@@ -563,9 +563,10 @@ a:hover { text-decoration: underline; }
             if (!inTitleBlock) fragment.appendChild(document.createElement('br'));
             return;
           }
-          if (tok2.is_space) return;
-          var span = makeTokenSpan(tok2);
-          target.appendChild(span);
+          if (!tok2.is_space) {
+            var span = makeTokenSpan(tok2);
+            target.appendChild(span);
+          }
         } else {
           var chunkSpan = document.createElement('span');
           chunkSpan.className = 'chunk';

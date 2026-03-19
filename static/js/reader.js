@@ -128,11 +128,10 @@
           if (!inTitleBlock) fragment.appendChild(document.createElement('br'));
           return;
         }
-        if (tok.is_space) {
-          return; // spaces come from between-segment logic below
+        if (!tok.is_space) {
+          const span = makeTokenSpan(tok);
+          target.appendChild(span);
         }
-        const span = makeTokenSpan(tok);
-        target.appendChild(span);
       } else {
         // chunk — render all non-space tokens inside a chunk wrapper
         const chunkSpan = document.createElement('span');
