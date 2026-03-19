@@ -194,6 +194,16 @@ a:hover { text-decoration: underline; }
 }
 .token:not(.is-punct):not(.is-space):hover { background-color: #f0f0f0; }
 .token.highlighted { background-color: #fff3b0; font-weight: bold; }
+.note-sup {
+  font-size: 0.6em;
+  font-weight: 700;
+  color: #c0392b;
+  vertical-align: super;
+  line-height: 0;
+  margin-left: 1px;
+  pointer-events: none;
+  user-select: none;
+}
 .chunk { display: inline; border-bottom: 2px solid #ccc; padding-bottom: 1px; }
 .chunk.chunk-hover { background-color: #fffde7; }
 .chunk.chunk-selected { background-color: #fffde7; }
@@ -633,12 +643,12 @@ a:hover { text-decoration: underline; }
       var surface = tokenEl.dataset.text;
       var noteKey = makeNoteKey(surface);
       if (notesMap.has(noteKey)) {
-        highlightToken(tokenEl);
         scrollToNote(noteKey);
         return;
       }
-      highlightToken(tokenEl);
-      addSoloTokenNote(tokenEl);
+      var num = noteCounter + 1;
+      var supEl = highlightToken(tokenEl, num);
+      addSoloTokenNote(tokenEl, supEl);
     }
 
     function handleChunkClick(chunkId, clickedTokenEl) {
@@ -648,23 +658,35 @@ a:hover { text-decoration: underline; }
       var chunkText = chunkTokenEls.map(function (t) { return t.dataset.text; }).join(' ');
       var noteKey = makeNoteKey(chunkText);
       if (notesMap.has(noteKey)) {
-        highlightChunk(chunkEl);
         scrollToNote(noteKey);
         return;
       }
-      highlightChunk(chunkEl);
-      addChunkNote(chunkEl, chunkTokenEls);
+      var num = noteCounter + 1;
+      var supEl = highlightChunk(chunkEl, num);
+      addChunkNote(chunkEl, chunkTokenEls, supEl);
     }
 
-    function highlightToken(tokenEl) { tokenEl.classList.add('highlighted'); }
-    function highlightChunk(chunkEl) {
+    function addSup(anchorEl, num) {
+      var sup = document.createElement('sup');
+      sup.className = 'note-sup';
+      sup.textContent = num;
+      anchorEl.parentNode.insertBefore(sup, anchorEl.nextSibling);
+      return sup;
+    }
+
+    function highlightToken(tokenEl, num) {
+      tokenEl.classList.add('highlighted');
+      if (num !== undefined) return addSup(tokenEl, num);
+    }
+    function highlightChunk(chunkEl, num) {
       chunkEl.classList.add('chunk-selected');
       chunkEl.querySelectorAll('.token').forEach(function (t) { t.classList.add('highlighted'); });
+      if (num !== undefined) return addSup(chunkEl, num);
     }
 
     // --- Note creation ---
 
-    function addSoloTokenNote(tokenEl) {
+    function addSoloTokenNote(tokenEl, supEl) {
       var surface = tokenEl.dataset.text;
       var lemma = tokenEl.dataset.lemma;
       var pos = tokenEl.dataset.pos;
@@ -693,10 +715,10 @@ a:hover { text-decoration: underline; }
       html += '</div>';
       html += '<button class="note-dismiss" aria-label="Remove note" data-note-key="' + escapeHtml(noteKey) + '">&#x2715;</button>';
       noteEl.innerHTML = html;
-      appendNote(noteEl, noteKey, [tokenEl]);
+      appendNote(noteEl, noteKey, [tokenEl], supEl);
     }
 
-    function addChunkNote(chunkEl, chunkTokenEls) {
+    function addChunkNote(chunkEl, chunkTokenEls, supEl) {
       var chunkText = chunkTokenEls.map(function (t) { return t.dataset.text; }).join(' ');
       var noteKey = makeNoteKey(chunkText);
       var firstToken = chunkTokenEls[0];
@@ -732,12 +754,12 @@ a:hover { text-decoration: underline; }
       html += '</div>';
       html += '<button class="note-dismiss" aria-label="Remove note" data-note-key="' + escapeHtml(noteKey) + '">&#x2715;</button>';
       noteEl.innerHTML = html;
-      appendNote(noteEl, noteKey, chunkTokenEls);
+      appendNote(noteEl, noteKey, chunkTokenEls, supEl);
     }
 
-    function appendNote(noteEl, noteKey, tokenEls) {
+    function appendNote(noteEl, noteKey, tokenEls, supEl) {
       notesList.appendChild(noteEl);
-      notesMap.set(noteKey, { noteEl: noteEl, tokenEls: tokenEls });
+      notesMap.set(noteKey, { noteEl: noteEl, tokenEls: tokenEls, supEl: supEl || null });
       noteEl.querySelector('.note-dismiss').addEventListener('click', function () {
         removeNote(noteKey);
       });
@@ -749,6 +771,7 @@ a:hover { text-decoration: underline; }
       var entry = notesMap.get(noteKey);
       if (!entry) return;
       entry.noteEl.remove();
+      if (entry.supEl) entry.supEl.remove();
       notesMap.delete(noteKey);
       if (entry.tokenEls) {
         entry.tokenEls.forEach(function (t) { t.classList.remove('highlighted'); });
@@ -762,6 +785,10 @@ a:hover { text-decoration: underline; }
       items.forEach(function (item, idx) {
         var numEl = item.querySelector('.note-number');
         if (numEl) numEl.textContent = (idx + 1) + '.';
+        // Update the corresponding sup in the text
+        var key = item.dataset.noteKey;
+        var entry = notesMap.get(key);
+        if (entry && entry.supEl) entry.supEl.textContent = idx + 1;
       });
       noteCounter = items.length;
     }
@@ -785,6 +812,7 @@ a:hover { text-decoration: underline; }
       clearAllBtn.addEventListener('click', function () {
         if (notesMap.size === 0) return;
         notesList.innerHTML = '';
+        notesMap.forEach(function (entry) { if (entry.supEl) entry.supEl.remove(); });
         notesMap.clear();
         noteCounter = 0;
         document.querySelectorAll('.token.highlighted').forEach(function (el) { el.classList.remove('highlighted'); });
