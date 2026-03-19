@@ -152,14 +152,19 @@
         target.appendChild(chunkSpan);
       }
 
-      // Add a space after this segment if the next visible segment doesn't start with punctuation
-      const nextSeg = segments[segIdx + 1];
-      if (nextSeg) {
-        const nextTok = nextSeg.type === 'token' ? nextSeg.token
-          : (nextSeg.tokens.find(function (t) { return !t.is_space && !t.is_newline; }) || null);
-        if (nextTok && !nextTok.is_newline && !nextTok.is_space && !nextTok.is_punct) {
-          target.appendChild(document.createTextNode(' '));
+      // Find the next non-space, non-newline segment to decide whether to add a space
+      let nextRealTok = null;
+      for (let ni = segIdx + 1; ni < segments.length; ni++) {
+        const ns = segments[ni];
+        if (ns.type === 'token') {
+          if (!ns.token.is_space && !ns.token.is_newline) { nextRealTok = ns.token; break; }
+        } else {
+          const nf = ns.tokens.find(t => !t.is_space && !t.is_newline);
+          if (nf) { nextRealTok = nf; break; }
         }
+      }
+      if (nextRealTok && !nextRealTok.is_punct) {
+        target.appendChild(document.createTextNode(' '));
       }
     });
 

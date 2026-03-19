@@ -584,13 +584,19 @@ a:hover { text-decoration: underline; }
           target.appendChild(chunkSpan);
         }
 
-        var nextSeg = segments[segIdx + 1];
-        if (nextSeg) {
-          var nextTok = nextSeg.type === 'token' ? nextSeg.token
-            : (nextSeg.tokens.find(function (t) { return !t.is_space && !t.is_newline; }) || null);
-          if (nextTok && !nextTok.is_newline && !nextTok.is_space && !nextTok.is_punct) {
-            target.appendChild(document.createTextNode(' '));
+        // Find the next non-space, non-newline segment to decide whether to add a space
+        var nextRealTok = null;
+        for (var ni = segIdx + 1; ni < segments.length; ni++) {
+          var ns = segments[ni];
+          if (ns.type === 'token') {
+            if (!ns.token.is_space && !ns.token.is_newline) { nextRealTok = ns.token; break; }
+          } else {
+            var nf = ns.tokens.find(function (t) { return !t.is_space && !t.is_newline; });
+            if (nf) { nextRealTok = nf; break; }
           }
+        }
+        if (nextRealTok && !nextRealTok.is_punct) {
+          target.appendChild(document.createTextNode(' '));
         }
       });
 
