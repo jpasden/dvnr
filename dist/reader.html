@@ -668,6 +668,14 @@ a:hover { text-decoration: underline; }
       var surface = tokenEl.dataset.text;
       var noteKey = makeNoteKey(surface);
       if (notesMap.has(noteKey)) {
+        // Already in list — highlight this instance with the same color+number and track it
+        var entry = notesMap.get(noteKey);
+        if (!tokenEl.classList.contains('highlighted')) {
+          highlightToken(tokenEl, entry.num, entry.color);
+          var supEl = addSup(tokenEl, entry.num, entry.color);
+          entry.tokenEls.push(tokenEl);
+          entry.supEls.push(supEl);
+        }
         scrollToNote(noteKey);
         return;
       }
@@ -755,7 +763,7 @@ a:hover { text-decoration: underline; }
       noteEl.innerHTML = html;
       noteEl.style.backgroundColor = color;
       noteEl.style.borderColor = shadeColor(color);
-      appendNote(noteEl, noteKey, [tokenEl], supEl);
+      appendNote(noteEl, noteKey, [tokenEl], supEl, noteCounter, color);
     }
 
     function addChunkNote(chunkEl, chunkTokenEls, supEl, color) {
@@ -796,12 +804,18 @@ a:hover { text-decoration: underline; }
       noteEl.innerHTML = html;
       noteEl.style.backgroundColor = color;
       noteEl.style.borderColor = shadeColor(color);
-      appendNote(noteEl, noteKey, chunkTokenEls, supEl);
+      appendNote(noteEl, noteKey, chunkTokenEls, supEl, noteCounter, color);
     }
 
-    function appendNote(noteEl, noteKey, tokenEls, supEl) {
+    function appendNote(noteEl, noteKey, tokenEls, supEl, num, color) {
       notesList.appendChild(noteEl);
-      notesMap.set(noteKey, { noteEl: noteEl, tokenEls: tokenEls, supEl: supEl || null });
+      notesMap.set(noteKey, {
+        noteEl: noteEl,
+        tokenEls: tokenEls,
+        supEls: supEl ? [supEl] : [],
+        num: num,
+        color: color,
+      });
       noteEl.querySelector('.note-dismiss').addEventListener('click', function () {
         removeNote(noteKey);
       });
@@ -813,7 +827,7 @@ a:hover { text-decoration: underline; }
       var entry = notesMap.get(noteKey);
       if (!entry) return;
       entry.noteEl.remove();
-      if (entry.supEl) entry.supEl.remove();
+      entry.supEls.forEach(function (s) { s.remove(); });
       notesMap.delete(noteKey);
       if (entry.tokenEls) {
         entry.tokenEls.forEach(function (t) {
@@ -830,10 +844,12 @@ a:hover { text-decoration: underline; }
       items.forEach(function (item, idx) {
         var numEl = item.querySelector('.note-number');
         if (numEl) numEl.textContent = (idx + 1) + '.';
-        // Update the corresponding sup in the text
         var key = item.dataset.noteKey;
         var entry = notesMap.get(key);
-        if (entry && entry.supEl) entry.supEl.textContent = idx + 1;
+        if (entry) {
+          entry.num = idx + 1;
+          entry.supEls.forEach(function (s) { s.textContent = idx + 1; });
+        }
       });
       noteCounter = items.length;
     }
@@ -857,7 +873,7 @@ a:hover { text-decoration: underline; }
       clearAllBtn.addEventListener('click', function () {
         if (notesMap.size === 0) return;
         notesList.innerHTML = '';
-        notesMap.forEach(function (entry) { if (entry.supEl) entry.supEl.remove(); });
+        notesMap.forEach(function (entry) { entry.supEls.forEach(function (s) { s.remove(); }); });
         notesMap.clear();
         noteCounter = 0;
         document.querySelectorAll('.token.highlighted').forEach(function (el) { el.classList.remove('highlighted'); el.style.backgroundColor = ''; });
