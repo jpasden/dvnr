@@ -671,8 +671,7 @@ a:hover { text-decoration: underline; }
         // Already in list — highlight this instance with the same color+number and track it
         var entry = notesMap.get(noteKey);
         if (!tokenEl.classList.contains('highlighted')) {
-          highlightToken(tokenEl, entry.num, entry.color);
-          var supEl = addSup(tokenEl, entry.num, entry.color);
+          var supEl = highlightToken(tokenEl, entry.num, entry.color);
           entry.tokenEls.push(tokenEl);
           entry.supEls.push(supEl);
         }
