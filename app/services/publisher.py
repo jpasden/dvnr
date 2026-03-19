@@ -262,7 +262,7 @@ def _build_index_html(texts: list[dict]) -> str:
 </head>
 <body>
   <header>
-    <h1>DVNR</h1>
+    <h1><a href="." style="color:#e8e8f0;text-decoration:none;">Dynamic Vocab Notes Reader</a></h1>
   </header>
   <main>
     <div class="page-header">
