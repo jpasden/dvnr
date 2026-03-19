@@ -12,6 +12,8 @@ from app.models import TextEntry
 from app.services.tokenizer import tokenize, count_words, get_content_words
 from app.services.definition_fetcher import fetch_definitions
 from app.services.known_lemmas_es import KNOWN_LEMMAS_ES
+from app.services.freq_dict_es import FREQ_DICT_ES
+from app.services.freq_dict_it import FREQ_DICT_IT
 from app.services.publisher import publish_text, publish_index
 from app.services.slugify import slugify
 
@@ -19,9 +21,10 @@ router = APIRouter(prefix="/admin")
 templates = Jinja2Templates(directory="app/templates")
 templates.env.filters["add_hours"] = lambda dt, h: dt + timedelta(hours=h)
 
+# Merge hand-curated lemmas on top of freq dicts (hand-curated takes precedence)
 _KNOWN: dict[str, dict[str, str]] = {
-    "es": KNOWN_LEMMAS_ES,
-    "it": {},  # Italian support flagged for later
+    "es": {**FREQ_DICT_ES, **KNOWN_LEMMAS_ES},
+    "it": FREQ_DICT_IT,
 }
 
 
