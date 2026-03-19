@@ -56,33 +56,29 @@ def publish_text(entry) -> None:
 
 
 def publish_index() -> None:
-    """Regenerate dist/es/index.html and dist/it/index.html from available JSON files."""
+    """Regenerate dist/index.html (combined home page) from available JSON files."""
     _ensure_dirs()
 
-    # Collect all published text metadata from JSON files
-    texts_by_lang: dict[str, list[dict]] = {"es": [], "it": []}
+    all_texts: list[dict] = []
 
     for json_path in sorted(TEXTS_DIR.glob("*.json")):
         try:
             data = json.loads(json_path.read_text(encoding="utf-8"))
             lang = data.get("language", "es")
-            if lang in texts_by_lang:
-                texts_by_lang[lang].append({
-                    "slug": data.get("slug", ""),
-                    "title": data.get("title", ""),
-                    "author": data.get("author"),
-                    "word_count": data.get("word_count", 0),
-                    "published_at": data.get("published_at", ""),
-                })
+            all_texts.append({
+                "slug": data.get("slug", ""),
+                "title": data.get("title", ""),
+                "author": data.get("author"),
+                "language": lang,
+                "word_count": data.get("word_count", 0),
+                "published_at": data.get("published_at", ""),
+            })
         except (json.JSONDecodeError, OSError):
             continue
 
-    for lang, texts in texts_by_lang.items():
-        # Sort by published_at descending
-        texts.sort(key=lambda t: t.get("published_at", ""), reverse=True)
-        html = _build_index_html(lang, texts)
-        index_path = DIST_DIR / lang / "index.html"
-        index_path.write_text(html, encoding="utf-8")
+    all_texts.sort(key=lambda t: t.get("published_at", ""), reverse=True)
+    html = _build_index_html(all_texts)
+    (DIST_DIR / "index.html").write_text(html, encoding="utf-8")
 
 
 def publish_all(db_session) -> None:
@@ -94,19 +90,12 @@ def publish_all(db_session) -> None:
     publish_index()
 
 
-def _build_index_html(lang: str, texts: list[dict]) -> str:
-    lang_label = "Spanish" if lang == "es" else "Italian"
-    lang_flag = "ES" if lang == "es" else "IT"
-    other_lang = "it" if lang == "es" else "es"
-    other_label = "Italian" if lang == "es" else "Spanish"
-
-    badge_color = "#856404" if lang == "es" else "#155724"
-    badge_bg = "#ffeeba" if lang == "es" else "#d4edda"
-
+def _build_index_html(texts: list[dict]) -> str:
     cards_html = ""
     if texts:
         for t in texts:
             slug = t["slug"]
+            lang = t.get("language", "es")
             title = _h(t["title"])
             author_html = f'<p class="card-author">{_h(t["author"])}</p>' if t.get("author") else ""
             word_count = t.get("word_count") or 0
@@ -118,8 +107,11 @@ def _build_index_html(lang: str, texts: list[dict]) -> str:
                     pub_date = f'<span class="card-meta">{dt.strftime("%b %d, %Y")}</span>'
                 except ValueError:
                     pass
+            badge_color = "#856404" if lang == "es" else "#155724"
+            badge_bg = "#ffeeba" if lang == "es" else "#d4edda"
+            lang_flag = lang.upper()
             cards_html += f"""
-    <a class="card" href="../index.html#{slug}">
+    <a class="card" href="reader.html#{slug}" data-lang="{lang}">
       <div class="card-header">
         <span class="lang-badge" style="background:{badge_bg};color:{badge_color}">{lang_flag}</span>
       </div>
@@ -133,14 +125,14 @@ def _build_index_html(lang: str, texts: list[dict]) -> str:
       </div>
     </a>"""
     else:
-        cards_html = '<p class="empty">No texts published yet.</p>'
+        cards_html = '<p class="empty" id="empty-msg">No texts published yet.</p>'
 
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{lang_label} Texts — DVNR</title>
+  <title>DVNR</title>
   <style>
     *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
     html {{ font-size: 16px; }}
@@ -166,28 +158,42 @@ def _build_index_html(lang: str, texts: list[dict]) -> str:
       letter-spacing: 0.05em;
       color: #e8e8f0;
     }}
-    header nav a {{
-      color: #c8c8e0;
-      text-decoration: none;
-      font-size: 0.9rem;
-      margin-left: 1.5rem;
-    }}
-    header nav a:hover {{ color: #fff; }}
     main {{
       max-width: 960px;
       margin: 0 auto;
       padding: 2rem 1.5rem;
     }}
+    .page-header {{
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }}
     .page-title {{
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-family: Arial, sans-serif;
-      margin-bottom: 0.25rem;
     }}
-    .page-subtitle {{
-      color: #666;
-      font-size: 0.9rem;
-      margin-bottom: 2rem;
+    .filter-btns {{
+      display: flex;
+      gap: 0.4rem;
     }}
+    .filter-btn {{
+      padding: 0.25rem 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #fff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      color: #555;
+      transition: background 0.12s, border-color 0.12s;
+    }}
+    .filter-btn:hover {{ background: #f0f0f0; }}
+    .filter-btn.active {{ background: #1a1a2e; color: #fff; border-color: #1a1a2e; }}
+    .filter-btn.active-es {{ background: #ffeeba; color: #856404; border-color: #ffc107; }}
+    .filter-btn.active-it {{ background: #d4edda; color: #155724; border-color: #c3e6cb; }}
     .grid {{
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -207,11 +213,9 @@ def _build_index_html(lang: str, texts: list[dict]) -> str:
     .card:hover {{
       border-color: #2a6496;
       box-shadow: 0 2px 10px rgba(42,100,150,0.12);
-      text-decoration: none;
     }}
-    .card-header {{
-      padding: 0.6rem 0.9rem 0;
-    }}
+    .card.hidden {{ display: none; }}
+    .card-header {{ padding: 0.6rem 0.9rem 0; }}
     .lang-badge {{
       display: inline-block;
       padding: 0.15rem 0.5rem;
@@ -244,14 +248,8 @@ def _build_index_html(lang: str, texts: list[dict]) -> str:
       gap: 0.75rem;
       flex-wrap: wrap;
     }}
-    .card-meta {{
-      font-size: 0.78rem;
-      color: #999;
-    }}
-    .empty {{
-      color: #777;
-      font-style: italic;
-    }}
+    .card-meta {{ font-size: 0.78rem; color: #999; }}
+    .empty {{ color: #777; font-style: italic; }}
     footer {{
       margin-top: 3rem;
       padding: 1rem 2rem;
@@ -265,18 +263,45 @@ def _build_index_html(lang: str, texts: list[dict]) -> str:
 <body>
   <header>
     <h1>DVNR</h1>
-    <nav>
-      <a href="../{other_lang}/index.html">{other_label}</a>
-    </nav>
   </header>
   <main>
-    <h1 class="page-title">{lang_label} Texts</h1>
-    <p class="page-subtitle">Click a text to open it in the reader.</p>
-    <div class="grid">
+    <div class="page-header">
+      <h1 class="page-title">Texts</h1>
+      <div class="filter-btns">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="es">ES</button>
+        <button class="filter-btn" data-filter="it">IT</button>
+      </div>
+    </div>
+    <div class="grid" id="grid">
       {cards_html}
     </div>
   </main>
   <footer>DVNR — Dynamic Vocabulary Notes Reader</footer>
+  <script>
+    (function () {{
+      var btns = document.querySelectorAll('.filter-btn');
+      var cards = document.querySelectorAll('.card');
+      btns.forEach(function (btn) {{
+        btn.addEventListener('click', function () {{
+          var filter = btn.dataset.filter;
+          btns.forEach(function (b) {{
+            b.classList.remove('active', 'active-es', 'active-it');
+          }});
+          btn.classList.add('active');
+          if (filter === 'es') btn.classList.add('active-es');
+          if (filter === 'it') btn.classList.add('active-it');
+          cards.forEach(function (card) {{
+            if (filter === 'all' || card.dataset.lang === filter) {{
+              card.classList.remove('hidden');
+            }} else {{
+              card.classList.add('hidden');
+            }}
+          }});
+        }});
+      }});
+    }})();
+  </script>
 </body>
 </html>"""
 
