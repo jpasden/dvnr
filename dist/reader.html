@@ -537,35 +537,17 @@ a:hover { text-decoration: underline; }
       }
 
       var fragment = document.createDocumentFragment();
-      var inTitleBlock = false;
-      var titleDiv = null;
 
       segments.forEach(function (seg, segIdx) {
-        var segIsTitle = seg.type === 'token'
-          ? (seg.token.is_title && !seg.token.is_newline && !seg.token.is_space)
-          : seg.tokens.some(function (t) { return t.is_title; });
-
-        if (segIsTitle && !inTitleBlock) {
-          titleDiv = document.createElement('div');
-          titleDiv.className = 'text-title-line';
-          fragment.appendChild(titleDiv);
-          inTitleBlock = true;
-        } else if (!segIsTitle && inTitleBlock) {
-          inTitleBlock = false;
-          titleDiv = null;
-        }
-
-        var target = inTitleBlock ? titleDiv : fragment;
-
         if (seg.type === 'token') {
           var tok2 = seg.token;
           if (tok2.is_newline) {
-            if (!inTitleBlock) fragment.appendChild(document.createElement('br'));
+            fragment.appendChild(document.createElement('br'));
             return;
           }
           if (!tok2.is_space) {
             var span = makeTokenSpan(tok2);
-            target.appendChild(span);
+            fragment.appendChild(span);
           }
         } else {
           var chunkSpan = document.createElement('span');
@@ -579,7 +561,7 @@ a:hover { text-decoration: underline; }
               chunkSpan.appendChild(document.createTextNode(' '));
             }
           });
-          target.appendChild(chunkSpan);
+          fragment.appendChild(chunkSpan);
         }
 
         // Find the next non-space, non-newline segment to decide whether to add a space
@@ -594,7 +576,7 @@ a:hover { text-decoration: underline; }
           }
         }
         if (nextRealTok && !nextRealTok.is_punct) {
-          target.appendChild(document.createTextNode(' '));
+          fragment.appendChild(document.createTextNode(' '));
         }
       });
 

@@ -95,42 +95,16 @@
 
     const fragment = document.createDocumentFragment();
 
-    // Collect title token indices for heading wrapper
-    const titleIndices = new Set(
-      tokens.filter(function (t) { return t.is_title; }).map(function (t) { return t.idx; })
-    );
-
-    // We'll wrap title segments in a heading div
-    let inTitleBlock = false;
-    let titleDiv = null;
-
     segments.forEach(function (seg, segIdx) {
-      // Determine if this segment belongs to the title
-      const segIsTitle = seg.type === 'token'
-        ? (seg.token.is_title && !seg.token.is_newline && !seg.token.is_space)
-        : seg.tokens.some(function (t) { return t.is_title; });
-
-      if (segIsTitle && !inTitleBlock) {
-        titleDiv = document.createElement('div');
-        titleDiv.className = 'text-title-line';
-        fragment.appendChild(titleDiv);
-        inTitleBlock = true;
-      } else if (!segIsTitle && inTitleBlock) {
-        inTitleBlock = false;
-        titleDiv = null;
-      }
-
-      const target = inTitleBlock ? titleDiv : fragment;
-
       if (seg.type === 'token') {
         const tok = seg.token;
         if (tok.is_newline) {
-          if (!inTitleBlock) fragment.appendChild(document.createElement('br'));
+          fragment.appendChild(document.createElement('br'));
           return;
         }
         if (!tok.is_space) {
           const span = makeTokenSpan(tok);
-          target.appendChild(span);
+          fragment.appendChild(span);
         }
       } else {
         // chunk — render all non-space tokens inside a chunk wrapper
@@ -142,13 +116,12 @@
         visibleToks.forEach(function (tok, idx) {
           const span = makeTokenSpan(tok);
           chunkSpan.appendChild(span);
-          // Space between tokens inside the chunk (not after last)
           if (idx < visibleToks.length - 1 && !visibleToks[idx + 1].is_punct) {
             chunkSpan.appendChild(document.createTextNode(' '));
           }
         });
 
-        target.appendChild(chunkSpan);
+        fragment.appendChild(chunkSpan);
       }
 
       // Find the next non-space, non-newline segment to decide whether to add a space
@@ -163,7 +136,7 @@
         }
       }
       if (nextRealTok && !nextRealTok.is_punct) {
-        target.appendChild(document.createTextNode(' '));
+        fragment.appendChild(document.createTextNode(' '));
       }
     });
 
