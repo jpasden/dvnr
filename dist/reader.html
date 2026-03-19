@@ -193,7 +193,7 @@ a:hover { text-decoration: underline; }
   cursor: default;
 }
 .token:not(.is-punct):not(.is-space):hover { background-color: #f0f0f0; }
-.token.highlighted { background-color: #fff3b0; font-weight: bold; }
+.token.highlighted { font-weight: bold; }
 .note-sup {
   font-size: 0.6em;
   font-weight: 700;
@@ -492,6 +492,27 @@ a:hover { text-decoration: underline; }
   // Reader logic (adapted from reader.js — preserves all interaction behaviour)
   // ---------------------------------------------------------------------------
 
+  var NOTE_COLORS = [
+    '#ffd6d6', // rose
+    '#ffddb8', // peach
+    '#fff3b0', // yellow
+    '#d6f5d6', // mint
+    '#b8e8ff', // sky blue
+    '#d6d6ff', // lavender
+    '#f5b8ff', // lilac
+    '#b8ffe8', // seafoam
+    '#ffe8b8', // apricot
+    '#d6f0ff', // powder blue
+    '#ffd6f0', // pink
+  ];
+  // Shuffle once on page load (Fisher-Yates)
+  (function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+  })(NOTE_COLORS);
+
   function runReader(tokens) {
     var noteCounter = 0;
     var notesMap = new Map();
@@ -647,8 +668,9 @@ a:hover { text-decoration: underline; }
         return;
       }
       var num = noteCounter + 1;
-      var supEl = highlightToken(tokenEl, num);
-      addSoloTokenNote(tokenEl, supEl);
+      var color = NOTE_COLORS[(num - 1) % NOTE_COLORS.length];
+      var supEl = highlightToken(tokenEl, num, color);
+      addSoloTokenNote(tokenEl, supEl, color);
     }
 
     function handleChunkClick(chunkId, clickedTokenEl) {
@@ -662,31 +684,43 @@ a:hover { text-decoration: underline; }
         return;
       }
       var num = noteCounter + 1;
-      var supEl = highlightChunk(chunkEl, num);
-      addChunkNote(chunkEl, chunkTokenEls, supEl);
+      var color = NOTE_COLORS[(num - 1) % NOTE_COLORS.length];
+      var supEl = highlightChunk(chunkEl, num, color);
+      addChunkNote(chunkEl, chunkTokenEls, supEl, color);
     }
 
-    function addSup(anchorEl, num) {
+    function addSup(anchorEl, num, color) {
       var sup = document.createElement('sup');
       sup.className = 'note-sup';
       sup.textContent = num;
+      sup.style.color = shadeColor(color);
       anchorEl.parentNode.insertBefore(sup, anchorEl.nextSibling);
       return sup;
     }
 
-    function highlightToken(tokenEl, num) {
-      tokenEl.classList.add('highlighted');
-      if (num !== undefined) return addSup(tokenEl, num);
+    function shadeColor(hex) {
+      // Darken a pastel hex color by ~35% for readable sup text
+      var r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+      return 'rgb('+Math.round(r*0.55)+','+Math.round(g*0.55)+','+Math.round(b*0.55)+')';
     }
-    function highlightChunk(chunkEl, num) {
+
+    function highlightToken(tokenEl, num, color) {
+      tokenEl.classList.add('highlighted');
+      tokenEl.style.backgroundColor = color;
+      if (num !== undefined) return addSup(tokenEl, num, color);
+    }
+    function highlightChunk(chunkEl, num, color) {
       chunkEl.classList.add('chunk-selected');
-      chunkEl.querySelectorAll('.token').forEach(function (t) { t.classList.add('highlighted'); });
-      if (num !== undefined) return addSup(chunkEl, num);
+      chunkEl.querySelectorAll('.token').forEach(function (t) {
+        t.classList.add('highlighted');
+        t.style.backgroundColor = color;
+      });
+      if (num !== undefined) return addSup(chunkEl, num, color);
     }
 
     // --- Note creation ---
 
-    function addSoloTokenNote(tokenEl, supEl) {
+    function addSoloTokenNote(tokenEl, supEl, color) {
       var surface = tokenEl.dataset.text;
       var lemma = tokenEl.dataset.lemma;
       var pos = tokenEl.dataset.pos;
@@ -715,10 +749,12 @@ a:hover { text-decoration: underline; }
       html += '</div>';
       html += '<button class="note-dismiss" aria-label="Remove note" data-note-key="' + escapeHtml(noteKey) + '">&#x2715;</button>';
       noteEl.innerHTML = html;
+      noteEl.style.backgroundColor = color;
+      noteEl.style.borderColor = shadeColor(color);
       appendNote(noteEl, noteKey, [tokenEl], supEl);
     }
 
-    function addChunkNote(chunkEl, chunkTokenEls, supEl) {
+    function addChunkNote(chunkEl, chunkTokenEls, supEl, color) {
       var chunkText = chunkTokenEls.map(function (t) { return t.dataset.text; }).join(' ');
       var noteKey = makeNoteKey(chunkText);
       var firstToken = chunkTokenEls[0];
@@ -754,6 +790,8 @@ a:hover { text-decoration: underline; }
       html += '</div>';
       html += '<button class="note-dismiss" aria-label="Remove note" data-note-key="' + escapeHtml(noteKey) + '">&#x2715;</button>';
       noteEl.innerHTML = html;
+      noteEl.style.backgroundColor = color;
+      noteEl.style.borderColor = shadeColor(color);
       appendNote(noteEl, noteKey, chunkTokenEls, supEl);
     }
 
@@ -774,7 +812,10 @@ a:hover { text-decoration: underline; }
       if (entry.supEl) entry.supEl.remove();
       notesMap.delete(noteKey);
       if (entry.tokenEls) {
-        entry.tokenEls.forEach(function (t) { t.classList.remove('highlighted'); });
+        entry.tokenEls.forEach(function (t) {
+          t.classList.remove('highlighted');
+          t.style.backgroundColor = '';
+        });
       }
       renumberNotes();
       updateNotesEmpty();
@@ -815,7 +856,7 @@ a:hover { text-decoration: underline; }
         notesMap.forEach(function (entry) { if (entry.supEl) entry.supEl.remove(); });
         notesMap.clear();
         noteCounter = 0;
-        document.querySelectorAll('.token.highlighted').forEach(function (el) { el.classList.remove('highlighted'); });
+        document.querySelectorAll('.token.highlighted').forEach(function (el) { el.classList.remove('highlighted'); el.style.backgroundColor = ''; });
         document.querySelectorAll('.chunk.chunk-selected').forEach(function (el) { el.classList.remove('chunk-selected'); });
         updateNotesEmpty();
       });
