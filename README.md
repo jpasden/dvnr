@@ -2,8 +2,6 @@
 
 A web application for reading Spanish and Italian texts with interactive vocabulary lookup. Click any word while reading to see the word's lemma and English definition in the notes panel. Notes are ephemeral by design — print to save.
 
-**Live site:** dvnr.johnpasden.com
-
 ---
 
 ## Local Setup
@@ -50,8 +48,8 @@ Admin panel: `http://127.0.0.1:8000/admin`
 | Local dictionary | Hand-curated ~316-entry known_lemmas_es.py (to be replaced by 10K Hermit Dave list) |
 | Frontend | Jinja2 templates, vanilla JS, CSS |
 | Database | SQLite (via SQLAlchemy) |
-| Static site | dist/ committed to repo, served by nginx on Opalstack |
-| Deployment | Opalstack — nginx serves dist/ as pure static files; no Python on server |
+| Static site | dist/ committed to repo, served by a static file host or nginx |
+| Deployment | nginx (or any static host) serves dist/ as pure static files; no Python on server |
 
 ---
 
@@ -233,7 +231,7 @@ All routes require `localhost` or `127.0.0.1` — no auth needed beyond that.
 
 ## Reader (`dist/reader.html`)
 
-Single-page SPA loaded by nginx. Reads the slug from the URL hash (`#el-secreto-de-mateo`), fetches `dist/texts/{slug}.json`, renders the two-column reader view.
+Single-page SPA. Reads the slug from the URL hash (`#el-secreto-de-mateo`), fetches `dist/texts/{slug}.json`, renders the two-column reader view.
 
 ### Layout
 
@@ -264,17 +262,10 @@ Single-page SPA loaded by nginx. Reads the slug from the URL hash (`#el-secreto-
 
 ## Deployment
 
-| Detail | Value |
-|--------|-------|
-| Live URL | `dvnr.johnpasden.com` |
-| GitHub repo | `https://github.com/jpasden/dvnr` |
-| Server | Opalstack, nginx serving `dist/` as static files |
-| Admin | Run locally only — `uvicorn app.main:app` on localhost |
-| Deploy | `git push` locally → `git pull` on Opalstack server |
-
-- No Python running on the server — dist/ is pure static
+- `dist/` is a self-contained static site — serve it with nginx, Caddy, GitHub Pages, or any static host
+- No Python runs on the server; the admin is localhost-only
 - SQLite DB lives in `instance/` (gitignored)
-- `.env` holds `ANTHROPIC_API_KEY` (gitignored, never on server)
+- `.env` holds `ANTHROPIC_API_KEY` (gitignored, never deployed to server)
 - Admin is localhost-only by IP check — no HTTP auth needed
 
 ---
