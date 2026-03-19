@@ -133,6 +133,7 @@ def _build_index_html(texts: list[dict]) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DVNR</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
     html {{ font-size: 16px; }}
@@ -153,7 +154,7 @@ def _build_index_html(texts: list[dict]) -> str:
     }}
     header h1 {{
       font-size: 1.25rem;
-      font-family: 'Courier New', monospace;
+      font-family: 'Pacifico', cursive;
       font-weight: bold;
       letter-spacing: 0.05em;
       color: #e8e8f0;
