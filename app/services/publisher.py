@@ -119,7 +119,7 @@ def _build_index_html(lang: str, texts: list[dict]) -> str:
                 except ValueError:
                     pass
             cards_html += f"""
-    <a class="card" href="../reader.html#{slug}">
+    <a class="card" href="../index.html#{slug}">
       <div class="card-header">
         <span class="lang-badge" style="background:{badge_bg};color:{badge_color}">{lang_flag}</span>
       </div>
