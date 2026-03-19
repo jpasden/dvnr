@@ -37,7 +37,7 @@ a:hover { text-decoration: underline; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.6rem 2rem;
+  padding: 0.6rem 1rem;
   background: #1a1a2e;
   color: #e8e8f0;
   border-bottom: 2px solid #2a2a4e;
@@ -156,7 +156,7 @@ a:hover { text-decoration: underline; }
   margin-bottom: 0.2rem;
 }
 .text-author {
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   color: #666;
   font-family: sans-serif;
   font-style: italic;
@@ -461,6 +461,7 @@ a:hover { text-decoration: underline; }
       '<div class="reader-layout">' +
         '<div class="text-column" id="text-column">' +
           '<div class="text-controls" id="text-controls">' +
+            '<span class="lang-label ' + langClass + '">' + langLabel + '</span>' +
             '<div class="size-controls">' +
               '<span class="controls-label">Size:</span>' +
               '<button class="size-btn" data-size="s">S</button>' +
@@ -468,7 +469,6 @@ a:hover { text-decoration: underline; }
               '<button class="size-btn" data-size="l">L</button>' +
               '<button class="size-btn" data-size="xl">XL</button>' +
             '</div>' +
-            '<span class="lang-label ' + langClass + '">' + langLabel + '</span>' +
           '</div>' +
           '<div class="text-meta">' +
             '<h2 class="text-title">' + escapeHtml(title) + '</h2>' +
