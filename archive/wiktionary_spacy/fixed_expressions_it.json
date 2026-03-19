@@ -1,0 +1,472 @@
+[
+  {
+    "canonical": "nonostante",
+    "lemmas": ["nonostante"],
+    "definition": "despite, notwithstanding"
+  },
+  {
+    "canonical": "a causa di",
+    "lemmas": ["a", "causa", "di"],
+    "definition": "because of, due to"
+  },
+  {
+    "canonical": "a meno che",
+    "lemmas": ["a", "meno", "che"],
+    "definition": "unless"
+  },
+  {
+    "canonical": "a partire da",
+    "lemmas": ["a", "partire", "da"],
+    "definition": "starting from, as of"
+  },
+  {
+    "canonical": "a volte",
+    "lemmas": ["a", "volta"],
+    "definition": "sometimes"
+  },
+  {
+    "canonical": "a volontà",
+    "lemmas": ["a", "volontà"],
+    "definition": "at will, as much as one likes"
+  },
+  {
+    "canonical": "a proposito",
+    "lemmas": ["a", "proposito"],
+    "definition": "by the way; on purpose"
+  },
+  {
+    "canonical": "a lungo andare",
+    "lemmas": ["a", "lungo", "andare"],
+    "definition": "in the long run"
+  },
+  {
+    "canonical": "in fondo",
+    "lemmas": ["in", "fondo"],
+    "definition": "at the bottom; after all, basically"
+  },
+  {
+    "canonical": "in effetti",
+    "lemmas": ["in", "effetto"],
+    "definition": "in fact, actually, indeed"
+  },
+  {
+    "canonical": "in realtà",
+    "lemmas": ["in", "realtà"],
+    "definition": "in reality, actually"
+  },
+  {
+    "canonical": "in modo da",
+    "lemmas": ["in", "modo", "da"],
+    "definition": "so as to, in a way that"
+  },
+  {
+    "canonical": "in seguito a",
+    "lemmas": ["in", "seguito", "a"],
+    "definition": "following, as a result of"
+  },
+  {
+    "canonical": "in cima a",
+    "lemmas": ["in", "cima", "a"],
+    "definition": "at the top of"
+  },
+  {
+    "canonical": "in mezzo a",
+    "lemmas": ["in", "mezzo", "a"],
+    "definition": "in the middle of, amid"
+  },
+  {
+    "canonical": "tuttavia",
+    "lemmas": ["tuttavia"],
+    "definition": "however, nevertheless, yet"
+  },
+  {
+    "canonical": "per quanto",
+    "lemmas": ["per", "quanto"],
+    "definition": "although, as much as, however"
+  },
+  {
+    "canonical": "per cui",
+    "lemmas": ["per", "cui"],
+    "definition": "therefore, which is why"
+  },
+  {
+    "canonical": "per lo più",
+    "lemmas": ["per", "lo", "più"],
+    "definition": "mostly, for the most part"
+  },
+  {
+    "canonical": "per lo meno",
+    "lemmas": ["per", "lo", "meno"],
+    "definition": "at least"
+  },
+  {
+    "canonical": "per forza",
+    "lemmas": ["per", "forza"],
+    "definition": "necessarily, inevitably; by force"
+  },
+  {
+    "canonical": "per caso",
+    "lemmas": ["per", "caso"],
+    "definition": "by chance, accidentally"
+  },
+  {
+    "canonical": "per favore",
+    "lemmas": ["per", "favore"],
+    "definition": "please"
+  },
+  {
+    "canonical": "per esempio",
+    "lemmas": ["per", "esempio"],
+    "definition": "for example"
+  },
+  {
+    "canonical": "per conto di",
+    "lemmas": ["per", "conto", "di"],
+    "definition": "on behalf of"
+  },
+  {
+    "canonical": "di solito",
+    "lemmas": ["di", "solito"],
+    "definition": "usually, normally"
+  },
+  {
+    "canonical": "di tanto in tanto",
+    "lemmas": ["di", "tanto", "in", "tanto"],
+    "definition": "from time to time, every now and then"
+  },
+  {
+    "canonical": "di nuovo",
+    "lemmas": ["di", "nuovo"],
+    "definition": "again, once more"
+  },
+  {
+    "canonical": "di solito",
+    "lemmas": ["di", "solito"],
+    "definition": "usually"
+  },
+  {
+    "canonical": "di rado",
+    "lemmas": ["di", "rado"],
+    "definition": "rarely, seldom"
+  },
+  {
+    "canonical": "di recente",
+    "lemmas": ["di", "recente"],
+    "definition": "recently"
+  },
+  {
+    "canonical": "di conseguenza",
+    "lemmas": ["di", "conseguenza"],
+    "definition": "consequently, as a result"
+  },
+  {
+    "canonical": "da parte di",
+    "lemmas": ["da", "parte", "di"],
+    "definition": "on the part of, from"
+  },
+  {
+    "canonical": "da allora",
+    "lemmas": ["da", "allora"],
+    "definition": "since then, from then on"
+  },
+  {
+    "canonical": "da quando",
+    "lemmas": ["da", "quando"],
+    "definition": "since (when)"
+  },
+  {
+    "canonical": "ad esempio",
+    "lemmas": ["a", "esempio"],
+    "definition": "for example"
+  },
+  {
+    "canonical": "all'improvviso",
+    "lemmas": ["a", "improvviso"],
+    "definition": "suddenly, all of a sudden"
+  },
+  {
+    "canonical": "al contrario",
+    "lemmas": ["a", "contrario"],
+    "definition": "on the contrary"
+  },
+  {
+    "canonical": "al massimo",
+    "lemmas": ["a", "massimo"],
+    "definition": "at most, at the most"
+  },
+  {
+    "canonical": "al di là di",
+    "lemmas": ["a", "di", "là", "di"],
+    "definition": "beyond, on the other side of"
+  },
+  {
+    "canonical": "allo stesso tempo",
+    "lemmas": ["a", "stesso", "tempo"],
+    "definition": "at the same time"
+  },
+  {
+    "canonical": "a poco a poco",
+    "lemmas": ["a", "poco", "a", "poco"],
+    "definition": "little by little, gradually"
+  },
+  {
+    "canonical": "a dire il vero",
+    "lemmas": ["a", "dire", "il", "vero"],
+    "definition": "to tell the truth, to be honest"
+  },
+  {
+    "canonical": "a dire la verità",
+    "lemmas": ["a", "dire", "il", "verità"],
+    "definition": "to tell the truth"
+  },
+  {
+    "canonical": "aver voglia di",
+    "lemmas": ["avere", "voglia", "di"],
+    "definition": "to feel like (doing something), to want to"
+  },
+  {
+    "canonical": "rendersi conto di",
+    "lemmas": ["rendere", "conto", "di"],
+    "definition": "to realise, to become aware of"
+  },
+  {
+    "canonical": "fare a meno di",
+    "lemmas": ["fare", "a", "meno", "di"],
+    "definition": "to do without"
+  },
+  {
+    "canonical": "fare del proprio meglio",
+    "lemmas": ["fare", "di", "proprio", "meglio"],
+    "definition": "to do one's best"
+  },
+  {
+    "canonical": "fare finta di",
+    "lemmas": ["fare", "finta", "di"],
+    "definition": "to pretend to"
+  },
+  {
+    "canonical": "tenere conto di",
+    "lemmas": ["tenere", "conto", "di"],
+    "definition": "to take into account"
+  },
+  {
+    "canonical": "andare d'accordo",
+    "lemmas": ["andare", "di", "accordo"],
+    "definition": "to get along, to agree"
+  },
+  {
+    "canonical": "avere luogo",
+    "lemmas": ["avere", "luogo"],
+    "definition": "to take place, to happen"
+  },
+  {
+    "canonical": "avere ragione",
+    "lemmas": ["avere", "ragione"],
+    "definition": "to be right"
+  },
+  {
+    "canonical": "avere torto",
+    "lemmas": ["avere", "torto"],
+    "definition": "to be wrong"
+  },
+  {
+    "canonical": "avere paura di",
+    "lemmas": ["avere", "paura", "di"],
+    "definition": "to be afraid of"
+  },
+  {
+    "canonical": "avere successo",
+    "lemmas": ["avere", "successo"],
+    "definition": "to be successful, to succeed"
+  },
+  {
+    "canonical": "avere bisogno di",
+    "lemmas": ["avere", "bisogno", "di"],
+    "definition": "to need"
+  },
+  {
+    "canonical": "avere intenzione di",
+    "lemmas": ["avere", "intenzione", "di"],
+    "definition": "to intend to"
+  },
+  {
+    "canonical": "avere fretta",
+    "lemmas": ["avere", "fretta"],
+    "definition": "to be in a hurry"
+  },
+  {
+    "canonical": "prendere in giro",
+    "lemmas": ["prendere", "in", "giro"],
+    "definition": "to make fun of, to tease"
+  },
+  {
+    "canonical": "mettere in discussione",
+    "lemmas": ["mettere", "in", "discussione"],
+    "definition": "to call into question, to challenge"
+  },
+  {
+    "canonical": "mettere in pratica",
+    "lemmas": ["mettere", "in", "pratica"],
+    "definition": "to put into practice"
+  },
+  {
+    "canonical": "mandare avanti",
+    "lemmas": ["mandare", "avanti"],
+    "definition": "to keep going, to run (a business etc.)"
+  },
+  {
+    "canonical": "non appena",
+    "lemmas": ["non", "appena"],
+    "definition": "as soon as"
+  },
+  {
+    "canonical": "nel frattempo",
+    "lemmas": ["in", "frattempo"],
+    "definition": "in the meantime, meanwhile"
+  },
+  {
+    "canonical": "con tutto ciò",
+    "lemmas": ["con", "tutto", "ciò"],
+    "definition": "despite all that, even so"
+  },
+  {
+    "canonical": "in ogni caso",
+    "lemmas": ["in", "ogni", "caso"],
+    "definition": "in any case, anyway"
+  },
+  {
+    "canonical": "in modo che",
+    "lemmas": ["in", "modo", "che"],
+    "definition": "so that, in order that"
+  },
+  {
+    "canonical": "a mano a mano",
+    "lemmas": ["a", "mano", "a", "mano"],
+    "definition": "little by little, gradually"
+  },
+  {
+    "canonical": "via via",
+    "lemmas": ["via", "via"],
+    "definition": "little by little, as time goes on"
+  },
+  {
+    "canonical": "soprattutto",
+    "lemmas": ["soprattutto"],
+    "definition": "above all, especially, mainly"
+  },
+  {
+    "canonical": "insomma",
+    "lemmas": ["insomma"],
+    "definition": "in short, all in all; well (hesitation)"
+  },
+  {
+    "canonical": "oppure",
+    "lemmas": ["oppure"],
+    "definition": "or else, otherwise, or"
+  },
+  {
+    "canonical": "eppure",
+    "lemmas": ["eppure"],
+    "definition": "and yet, but still"
+  },
+  {
+    "canonical": "anzi",
+    "lemmas": ["anzi"],
+    "definition": "on the contrary, rather, in fact"
+  },
+  {
+    "canonical": "eppoi",
+    "lemmas": ["e", "poi"],
+    "definition": "and then, besides"
+  },
+  {
+    "canonical": "tra poco",
+    "lemmas": ["tra", "poco"],
+    "definition": "soon, in a little while"
+  },
+  {
+    "canonical": "poco fa",
+    "lemmas": ["poco", "fa"],
+    "definition": "a little while ago, just now"
+  },
+  {
+    "canonical": "per ora",
+    "lemmas": ["per", "ora"],
+    "definition": "for now, for the time being"
+  },
+  {
+    "canonical": "prima di tutto",
+    "lemmas": ["prima", "di", "tutto"],
+    "definition": "first of all, above all"
+  },
+  {
+    "canonical": "prima o poi",
+    "lemmas": ["prima", "o", "poi"],
+    "definition": "sooner or later"
+  },
+  {
+    "canonical": "più o meno",
+    "lemmas": ["più", "o", "meno"],
+    "definition": "more or less, approximately"
+  },
+  {
+    "canonical": "sempre di più",
+    "lemmas": ["sempre", "di", "più"],
+    "definition": "more and more"
+  },
+  {
+    "canonical": "senza dubbio",
+    "lemmas": ["senza", "dubbio"],
+    "definition": "without a doubt, undoubtedly"
+  },
+  {
+    "canonical": "forse",
+    "lemmas": ["forse"],
+    "definition": "maybe, perhaps, possibly"
+  },
+  {
+    "canonical": "magari",
+    "lemmas": ["magari"],
+    "definition": "maybe, perhaps; if only; even"
+  },
+  {
+    "canonical": "tanto per cambiare",
+    "lemmas": ["tanto", "per", "cambiare"],
+    "definition": "for a change (often ironic)"
+  },
+  {
+    "canonical": "è ovvio che",
+    "lemmas": ["essere", "ovvio", "che"],
+    "definition": "it is obvious that"
+  },
+  {
+    "canonical": "in altre parole",
+    "lemmas": ["in", "altro", "parola"],
+    "definition": "in other words"
+  },
+  {
+    "canonical": "a prescindere da",
+    "lemmas": ["a", "prescindere", "da"],
+    "definition": "regardless of, apart from"
+  },
+  {
+    "canonical": "a seconda di",
+    "lemmas": ["a", "seconda", "di"],
+    "definition": "depending on, according to"
+  },
+  {
+    "canonical": "grazie a",
+    "lemmas": ["grazia", "a"],
+    "definition": "thanks to"
+  },
+  {
+    "canonical": "rispetto a",
+    "lemmas": ["rispetto", "a"],
+    "definition": "with respect to, compared to"
+  },
+  {
+    "canonical": "contrariamente a",
+    "lemmas": ["contrariamente", "a"],
+    "definition": "contrary to, unlike"
+  }
+]

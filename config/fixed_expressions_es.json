@@ -1,0 +1,482 @@
+[
+  {
+    "canonical": "a pesar de",
+    "lemmas": ["a", "pesar", "de"],
+    "definition": "despite, in spite of"
+  },
+  {
+    "canonical": "a causa de",
+    "lemmas": ["a", "causa", "de"],
+    "definition": "because of, due to"
+  },
+  {
+    "canonical": "a menos que",
+    "lemmas": ["a", "menos", "que"],
+    "definition": "unless"
+  },
+  {
+    "canonical": "a partir de",
+    "lemmas": ["a", "partir", "de"],
+    "definition": "from, starting from"
+  },
+  {
+    "canonical": "a tiempo",
+    "lemmas": ["a", "tiempo"],
+    "definition": "on time"
+  },
+  {
+    "canonical": "a veces",
+    "lemmas": ["a", "vez"],
+    "definition": "sometimes"
+  },
+  {
+    "canonical": "a menudo",
+    "lemmas": ["a", "menudo"],
+    "definition": "often, frequently"
+  },
+  {
+    "canonical": "a propósito",
+    "lemmas": ["a", "propósito"],
+    "definition": "on purpose; by the way"
+  },
+  {
+    "canonical": "a lo mejor",
+    "lemmas": ["a", "lo", "mejor"],
+    "definition": "maybe, perhaps"
+  },
+  {
+    "canonical": "a fin de cuentas",
+    "lemmas": ["a", "fin", "de", "cuenta"],
+    "definition": "in the end, after all"
+  },
+  {
+    "canonical": "sin embargo",
+    "lemmas": ["sin", "embargo"],
+    "definition": "however, nevertheless"
+  },
+  {
+    "canonical": "por lo tanto",
+    "lemmas": ["por", "lo", "tanto"],
+    "definition": "therefore, consequently"
+  },
+  {
+    "canonical": "por supuesto",
+    "lemmas": ["por", "supuesto"],
+    "definition": "of course, certainly"
+  },
+  {
+    "canonical": "por eso",
+    "lemmas": ["por", "eso"],
+    "definition": "that's why, for that reason"
+  },
+  {
+    "canonical": "por fin",
+    "lemmas": ["por", "fin"],
+    "definition": "finally, at last"
+  },
+  {
+    "canonical": "por favor",
+    "lemmas": ["por", "favor"],
+    "definition": "please"
+  },
+  {
+    "canonical": "por lo menos",
+    "lemmas": ["por", "lo", "menos"],
+    "definition": "at least"
+  },
+  {
+    "canonical": "por lo general",
+    "lemmas": ["por", "lo", "general"],
+    "definition": "generally, usually"
+  },
+  {
+    "canonical": "de repente",
+    "lemmas": ["de", "repente"],
+    "definition": "suddenly"
+  },
+  {
+    "canonical": "de vez en cuando",
+    "lemmas": ["de", "vez", "en", "cuando"],
+    "definition": "from time to time, occasionally"
+  },
+  {
+    "canonical": "de acuerdo",
+    "lemmas": ["de", "acuerdo"],
+    "definition": "agreed, OK, in agreement"
+  },
+  {
+    "canonical": "de hecho",
+    "lemmas": ["de", "hecho"],
+    "definition": "in fact, actually"
+  },
+  {
+    "canonical": "de todas formas",
+    "lemmas": ["de", "todo", "forma"],
+    "definition": "anyway, in any case"
+  },
+  {
+    "canonical": "de todos modos",
+    "lemmas": ["de", "todo", "modo"],
+    "definition": "anyway, in any case"
+  },
+  {
+    "canonical": "en cambio",
+    "lemmas": ["en", "cambio"],
+    "definition": "on the other hand, instead"
+  },
+  {
+    "canonical": "en seguida",
+    "lemmas": ["en", "seguida"],
+    "definition": "immediately, right away"
+  },
+  {
+    "canonical": "en cuanto a",
+    "lemmas": ["en", "cuanto", "a"],
+    "definition": "as for, regarding"
+  },
+  {
+    "canonical": "en realidad",
+    "lemmas": ["en", "realidad"],
+    "definition": "in reality, actually"
+  },
+  {
+    "canonical": "en absoluto",
+    "lemmas": ["en", "absoluto"],
+    "definition": "absolutely not, not at all"
+  },
+  {
+    "canonical": "en serio",
+    "lemmas": ["en", "serio"],
+    "definition": "seriously"
+  },
+  {
+    "canonical": "en voz alta",
+    "lemmas": ["en", "voz", "alto"],
+    "definition": "out loud, aloud"
+  },
+  {
+    "canonical": "en voz baja",
+    "lemmas": ["en", "voz", "bajo"],
+    "definition": "in a low voice, quietly"
+  },
+  {
+    "canonical": "es decir",
+    "lemmas": ["ser", "decir"],
+    "definition": "that is to say, i.e."
+  },
+  {
+    "canonical": "o sea",
+    "lemmas": ["o", "ser"],
+    "definition": "that is, in other words"
+  },
+  {
+    "canonical": "sin duda",
+    "lemmas": ["sin", "duda"],
+    "definition": "without a doubt, undoubtedly"
+  },
+  {
+    "canonical": "tal vez",
+    "lemmas": ["tal", "vez"],
+    "definition": "maybe, perhaps"
+  },
+  {
+    "canonical": "quizás",
+    "lemmas": ["quizás"],
+    "definition": "maybe, perhaps"
+  },
+  {
+    "canonical": "más o menos",
+    "lemmas": ["más", "o", "menos"],
+    "definition": "more or less, approximately"
+  },
+  {
+    "canonical": "ante todo",
+    "lemmas": ["ante", "todo"],
+    "definition": "above all, first of all"
+  },
+  {
+    "canonical": "sobre todo",
+    "lemmas": ["sobre", "todo"],
+    "definition": "above all, especially"
+  },
+  {
+    "canonical": "además de",
+    "lemmas": ["además", "de"],
+    "definition": "in addition to, besides"
+  },
+  {
+    "canonical": "gracias a",
+    "lemmas": ["gracia", "a"],
+    "definition": "thanks to"
+  },
+  {
+    "canonical": "frente a",
+    "lemmas": ["frente", "a"],
+    "definition": "facing, in front of; in the face of"
+  },
+  {
+    "canonical": "lejos de",
+    "lemmas": ["lejos", "de"],
+    "definition": "far from"
+  },
+  {
+    "canonical": "cerca de",
+    "lemmas": ["cerca", "de"],
+    "definition": "close to, near"
+  },
+  {
+    "canonical": "antes de",
+    "lemmas": ["antes", "de"],
+    "definition": "before"
+  },
+  {
+    "canonical": "después de",
+    "lemmas": ["después", "de"],
+    "definition": "after"
+  },
+  {
+    "canonical": "dentro de",
+    "lemmas": ["dentro", "de"],
+    "definition": "inside, within"
+  },
+  {
+    "canonical": "fuera de",
+    "lemmas": ["fuera", "de"],
+    "definition": "outside of, beyond"
+  },
+  {
+    "canonical": "a través de",
+    "lemmas": ["a", "través", "de"],
+    "definition": "through, across"
+  },
+  {
+    "canonical": "tener en cuenta",
+    "lemmas": ["tener", "en", "cuenta"],
+    "definition": "to take into account, to keep in mind"
+  },
+  {
+    "canonical": "tener lugar",
+    "lemmas": ["tener", "lugar"],
+    "definition": "to take place, to happen"
+  },
+  {
+    "canonical": "tener ganas de",
+    "lemmas": ["tener", "gana", "de"],
+    "definition": "to feel like (doing something), to want to"
+  },
+  {
+    "canonical": "tener razón",
+    "lemmas": ["tener", "razón"],
+    "definition": "to be right"
+  },
+  {
+    "canonical": "tener miedo",
+    "lemmas": ["tener", "miedo"],
+    "definition": "to be afraid, to be scared"
+  },
+  {
+    "canonical": "tener éxito",
+    "lemmas": ["tener", "éxito"],
+    "definition": "to be successful, to succeed"
+  },
+  {
+    "canonical": "echar de menos",
+    "lemmas": ["echar", "de", "menos"],
+    "definition": "to miss (someone or something)"
+  },
+  {
+    "canonical": "hacer caso",
+    "lemmas": ["hacer", "caso"],
+    "definition": "to pay attention, to heed"
+  },
+  {
+    "canonical": "hacer falta",
+    "lemmas": ["hacer", "falta"],
+    "definition": "to be necessary, to be needed"
+  },
+  {
+    "canonical": "darse cuenta de",
+    "lemmas": ["dar", "cuenta", "de"],
+    "definition": "to realise, to become aware of"
+  },
+  {
+    "canonical": "ponerse de acuerdo",
+    "lemmas": ["poner", "de", "acuerdo"],
+    "definition": "to come to an agreement, to agree"
+  },
+  {
+    "canonical": "llevarse bien",
+    "lemmas": ["llevar", "bien"],
+    "definition": "to get along well (with someone)"
+  },
+  {
+    "canonical": "dar a conocer",
+    "lemmas": ["dar", "a", "conocer"],
+    "definition": "to make known, to reveal"
+  },
+  {
+    "canonical": "a lo largo de",
+    "lemmas": ["a", "lo", "largo", "de"],
+    "definition": "throughout, along"
+  },
+  {
+    "canonical": "a raíz de",
+    "lemmas": ["a", "raíz", "de"],
+    "definition": "as a result of, following"
+  },
+  {
+    "canonical": "a diferencia de",
+    "lemmas": ["a", "diferencia", "de"],
+    "definition": "unlike, in contrast to"
+  },
+  {
+    "canonical": "a base de",
+    "lemmas": ["a", "base", "de"],
+    "definition": "by means of, based on"
+  },
+  {
+    "canonical": "con respecto a",
+    "lemmas": ["con", "respecto", "a"],
+    "definition": "with respect to, regarding"
+  },
+  {
+    "canonical": "con tal de que",
+    "lemmas": ["con", "tal", "de", "que"],
+    "definition": "as long as, provided that"
+  },
+  {
+    "canonical": "con el fin de",
+    "lemmas": ["con", "el", "fin", "de"],
+    "definition": "in order to, with the aim of"
+  },
+  {
+    "canonical": "a eso de",
+    "lemmas": ["a", "eso", "de"],
+    "definition": "at about (a time)"
+  },
+  {
+    "canonical": "en vez de",
+    "lemmas": ["en", "vez", "de"],
+    "definition": "instead of"
+  },
+  {
+    "canonical": "en lugar de",
+    "lemmas": ["en", "lugar", "de"],
+    "definition": "instead of, in place of"
+  },
+  {
+    "canonical": "en caso de que",
+    "lemmas": ["en", "caso", "de", "que"],
+    "definition": "in case, in the event that"
+  },
+  {
+    "canonical": "en cuanto",
+    "lemmas": ["en", "cuanto"],
+    "definition": "as soon as"
+  },
+  {
+    "canonical": "a pesar de que",
+    "lemmas": ["a", "pesar", "de", "que"],
+    "definition": "even though, despite the fact that"
+  },
+  {
+    "canonical": "ya que",
+    "lemmas": ["ya", "que"],
+    "definition": "since, given that, because"
+  },
+  {
+    "canonical": "puesto que",
+    "lemmas": ["poner", "que"],
+    "definition": "since, given that, because"
+  },
+  {
+    "canonical": "así que",
+    "lemmas": ["así", "que"],
+    "definition": "so, therefore"
+  },
+  {
+    "canonical": "aunque",
+    "lemmas": ["aunque"],
+    "definition": "although, even though, even if"
+  },
+  {
+    "canonical": "siempre que",
+    "lemmas": ["siempre", "que"],
+    "definition": "as long as, whenever"
+  },
+  {
+    "canonical": "mientras tanto",
+    "lemmas": ["mientras", "tanto"],
+    "definition": "meanwhile, in the meantime"
+  },
+  {
+    "canonical": "a solas",
+    "lemmas": ["a", "solo"],
+    "definition": "alone, by oneself"
+  },
+  {
+    "canonical": "a oscuras",
+    "lemmas": ["a", "oscuro"],
+    "definition": "in the dark"
+  },
+  {
+    "canonical": "en pie",
+    "lemmas": ["en", "pie"],
+    "definition": "standing, upright; still going"
+  },
+  {
+    "canonical": "boca abajo",
+    "lemmas": ["boca", "abajo"],
+    "definition": "face down"
+  },
+  {
+    "canonical": "boca arriba",
+    "lemmas": ["boca", "arriba"],
+    "definition": "face up"
+  },
+  {
+    "canonical": "de golpe",
+    "lemmas": ["de", "golpe"],
+    "definition": "suddenly, all at once"
+  },
+  {
+    "canonical": "de nuevo",
+    "lemmas": ["de", "nuevo"],
+    "definition": "again, once more"
+  },
+  {
+    "canonical": "de pronto",
+    "lemmas": ["de", "pronto"],
+    "definition": "suddenly, all of a sudden"
+  },
+  {
+    "canonical": "de verdad",
+    "lemmas": ["de", "verdad"],
+    "definition": "really, truly; genuine"
+  },
+  {
+    "canonical": "cada vez más",
+    "lemmas": ["cada", "vez", "más"],
+    "definition": "more and more, increasingly"
+  },
+  {
+    "canonical": "cada vez menos",
+    "lemmas": ["cada", "vez", "menos"],
+    "definition": "less and less"
+  },
+  {
+    "canonical": "no obstante",
+    "lemmas": ["no", "obstante"],
+    "definition": "nevertheless, however"
+  },
+  {
+    "canonical": "a fin de",
+    "lemmas": ["a", "fin", "de"],
+    "definition": "in order to, so as to"
+  },
+  {
+    "canonical": "a fuerza de",
+    "lemmas": ["a", "fuerza", "de"],
+    "definition": "by dint of, through sheer force of"
+  }
+]
