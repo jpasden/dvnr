@@ -59,17 +59,37 @@
       color: #888;
       margin-bottom: 0.4rem;
     }
+    .pre-wrap {
+      position: relative;
+    }
     pre {
       background: #1a1a2e;
       color: #e8e8f0;
-      padding: 1rem 1.25rem;
+      padding: 1rem 3rem 1rem 1.25rem;
       border-radius: 6px;
       font-family: monospace;
       font-size: 0.95rem;
       white-space: pre;
       overflow-x: auto;
-      user-select: all;
     }
+    .copy-btn {
+      position: absolute;
+      top: 50%;
+      right: 0.6rem;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.15s;
+      padding: 0.25rem;
+      color: #aab;
+      line-height: 1;
+    }
+    .copy-btn:hover { color: #fff; }
+    .pre-wrap:hover .copy-btn { opacity: 1; }
+    .copy-btn svg { display: block; width: 16px; height: 16px; }
+    .copy-btn.copied { color: #6f6; }
     .btn {
       display: inline-block;
       margin-top: 1.5rem;
@@ -81,9 +101,7 @@
       font-size: 1rem;
       font-weight: bold;
     }
-    .btn:hover {
-      background: #2a2a4e;
-    }
+    .btn:hover { background: #2a2a4e; }
     .note {
       font-size: 0.85rem;
       color: #888;
@@ -101,17 +119,41 @@
 
     <div class="step">
       <div class="step-label">Step 1 — Navigate to the project</div>
-      <pre>cd /Users/jpasden/Code/dvnr</pre>
+      <div class="pre-wrap">
+        <pre>cd ~/Code/dvnr</pre>
+        <button class="copy-btn" title="Copy">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="5" y="5" width="9" height="9" rx="1.5"/>
+            <path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <div class="step">
       <div class="step-label">Step 2 — Activate the virtual environment</div>
-      <pre>source .venv/bin/activate</pre>
+      <div class="pre-wrap">
+        <pre>source .venv/bin/activate</pre>
+        <button class="copy-btn" title="Copy">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="5" y="5" width="9" height="9" rx="1.5"/>
+            <path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <div class="step">
       <div class="step-label">Step 3 — Start the server</div>
-      <pre>python -m uvicorn app.main:app --reload</pre>
+      <div class="pre-wrap">
+        <pre>python -m uvicorn app.main:app --reload</pre>
+        <button class="copy-btn" title="Copy">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="5" y="5" width="9" height="9" rx="1.5"/>
+            <path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <a class="btn" href="http://127.0.0.1:8000/admin">Open Admin Panel →</a>
@@ -119,9 +161,29 @@
 
     <div class="step" style="margin-top:2rem;">
       <div class="step-label">After publishing — deploy to the live site</div>
-      <pre>git add dist/ &amp;&amp; git commit -m "Publish new text" &amp;&amp; git push</pre>
+      <div class="pre-wrap">
+        <pre>git add dist/ &amp;&amp; git commit -m "Publish new text" &amp;&amp; git push</pre>
+        <button class="copy-btn" title="Copy">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="5" y="5" width="9" height="9" rx="1.5"/>
+            <path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/>
+          </svg>
+        </button>
+      </div>
       <p class="note">Then SSH to the server and run <code>git pull</code>.</p>
     </div>
   </main>
+
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const text = btn.closest('.pre-wrap').querySelector('pre').textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          btn.classList.add('copied');
+          setTimeout(() => btn.classList.remove('copied'), 1500);
+        });
+      });
+    });
+  </script>
 </body>
 </html>
