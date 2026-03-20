@@ -264,6 +264,7 @@ def _build_index_html(texts: list[dict]) -> str:
 <body>
   <header>
     <h1><a href="." style="color:#e8e8f0;text-decoration:none;">Dynamic Vocab Notes Reader</a></h1>
+    <a href="/admin/" style="color:#e8e8f0;text-decoration:none;font-size:0.85rem;opacity:0.6;">Admin</a>
   </header>
   <main>
     <div class="page-header">

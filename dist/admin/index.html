@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DVNR Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #fafaf8;
+      color: #222;
+      line-height: 1.6;
+    }
+    header {
+      background: #1a1a2e;
+      color: #e8e8f0;
+      padding: 0.75rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #2a2a4e;
+    }
+    header h1 {
+      font-size: 1.25rem;
+      font-family: 'Pacifico', cursive;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      color: #e8e8f0;
+      text-decoration: none;
+    }
+    header h1 a {
+      color: inherit;
+      text-decoration: none;
+    }
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      margin-bottom: 1rem;
+      color: #444;
+    }
+    .step {
+      margin-bottom: 2rem;
+    }
+    .step-label {
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #888;
+      margin-bottom: 0.4rem;
+    }
+    pre {
+      background: #1a1a2e;
+      color: #e8e8f0;
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.95rem;
+      white-space: pre;
+      overflow-x: auto;
+      user-select: all;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.65rem 1.5rem;
+      background: #1a1a2e;
+      color: #e8e8f0;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+    .btn:hover {
+      background: #2a2a4e;
+    }
+    .note {
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><a href="/">Dynamic Vocab Notes Reader</a></h1>
+  </header>
+  <main>
+    <h2>Run the admin site locally</h2>
+    <p>The admin panel runs on your local machine only. Follow these steps:</p>
+
+    <div class="step">
+      <div class="step-label">Step 1 — Navigate to the project</div>
+      <pre>cd /Users/jpasden/Code/dvnr</pre>
+    </div>
+
+    <div class="step">
+      <div class="step-label">Step 2 — Activate the virtual environment</div>
+      <pre>source .venv/bin/activate</pre>
+    </div>
+
+    <div class="step">
+      <div class="step-label">Step 3 — Start the server</div>
+      <pre>python -m uvicorn app.main:app --reload</pre>
+    </div>
+
+    <a class="btn" href="http://127.0.0.1:8000/admin">Open Admin Panel →</a>
+    <p class="note">This link only works when the local server is running.</p>
+
+    <div class="step" style="margin-top:2rem;">
+      <div class="step-label">After publishing — deploy to the live site</div>
+      <pre>git add dist/ &amp;&amp; git commit -m "Publish new text" &amp;&amp; git push</pre>
+      <p class="note">Then SSH to the server and run <code>git pull</code>.</p>
+    </div>
+  </main>
+</body>
+</html>
