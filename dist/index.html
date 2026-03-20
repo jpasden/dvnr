@@ -246,24 +246,43 @@
     (function () {
       var btns = document.querySelectorAll('.filter-btn');
       var cards = document.querySelectorAll('.card');
+
+      function applyFilter(filter) {
+        btns.forEach(function (b) {
+          b.classList.remove('active', 'active-es', 'active-it');
+        });
+        var active = document.querySelector('.filter-btn[data-filter="' + filter + '"]');
+        if (active) {
+          active.classList.add('active');
+          if (filter === 'es') active.classList.add('active-es');
+          if (filter === 'it') active.classList.add('active-it');
+        }
+        cards.forEach(function (card) {
+          if (filter === 'all' || card.dataset.lang === filter) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      }
+
       btns.forEach(function (btn) {
         btn.addEventListener('click', function () {
           var filter = btn.dataset.filter;
-          btns.forEach(function (b) {
-            b.classList.remove('active', 'active-es', 'active-it');
-          });
-          btn.classList.add('active');
-          if (filter === 'es') btn.classList.add('active-es');
-          if (filter === 'it') btn.classList.add('active-it');
-          cards.forEach(function (card) {
-            if (filter === 'all' || card.dataset.lang === filter) {
-              card.classList.remove('hidden');
-            } else {
-              card.classList.add('hidden');
-            }
-          });
+          applyFilter(filter);
+          if (filter === 'all') {
+            history.replaceState(null, '', location.pathname);
+          } else {
+            history.replaceState(null, '', '#' + filter);
+          }
         });
       });
+
+      // Apply filter from URL hash on load
+      var hash = location.hash.replace('#', '');
+      if (hash === 'es' || hash === 'it') {
+        applyFilter(hash);
+      }
     })();
   </script>
 </body>
