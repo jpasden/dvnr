@@ -89,7 +89,7 @@
     .copy-btn:hover { color: #fff; }
     .pre-wrap:hover .copy-btn { opacity: 1; }
     .copy-btn svg { display: block; width: 16px; height: 16px; }
-    .copy-btn.copied { color: #6f6; }
+    .copy-btn.copied { color: #e8e8f0; }
     .btn {
       display: inline-block;
       margin-top: 1.5rem;
@@ -175,12 +175,24 @@
   </main>
 
   <script>
+    const copyIcon = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="5" y="5" width="9" height="9" rx="1.5"/>
+        <path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/>
+      </svg>`;
+    const checkIcon = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="3,8 6.5,11.5 13,4.5"/>
+      </svg>`;
+
     document.querySelectorAll('.copy-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const text = btn.closest('.pre-wrap').querySelector('pre').textContent;
         navigator.clipboard.writeText(text).then(() => {
+          btn.innerHTML = checkIcon;
           btn.classList.add('copied');
-          setTimeout(() => btn.classList.remove('copied'), 1500);
+          setTimeout(() => {
+            btn.innerHTML = copyIcon;
+            btn.classList.remove('copied');
+          }, 1500);
         });
       });
     });
