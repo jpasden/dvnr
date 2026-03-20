@@ -48,11 +48,11 @@ a:hover {
 }
 
 .site-title {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: bold;
   color: #e8e8f0;
   letter-spacing: 0.05em;
-  font-family: 'Courier New', monospace;
+  font-family: 'Pacifico', cursive;
 }
 
 .site-title:hover {
