@@ -23,6 +23,22 @@
     </div>
 
     <div class="form-group">
+      <label for="source-input">Source URL <span class="optional">(optional — links author name)</span></label>
+      <input type="url" id="source-input" name="source" placeholder="https://…">
+    </div>
+
+    <div class="form-group">
+      <label for="text-type-input">Text type <span class="required">*</span></label>
+      <select id="text-type-input" name="text_type">
+        <option value="story">story</option>
+        <option value="song">song</option>
+        <option value="dialogue">dialogue</option>
+        <option value="email">email</option>
+        <option value="poem">poem</option>
+      </select>
+    </div>
+
+    <div class="form-group">
       <label>Language <span class="required">*</span></label>
       <div class="lang-toggle" id="admin-lang-toggle">
         <button type="button" class="lang-btn active" data-lang="es">ES — Spanish</button>

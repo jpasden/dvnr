@@ -88,6 +88,7 @@
     }
     .card.hidden { display: none; }
     .card-header { padding: 0.6rem 0.9rem 0; }
+    .card-header { display: flex; align-items: center; gap: 0.4rem; }
     .lang-badge {
       display: inline-block;
       padding: 0.15rem 0.5rem;
@@ -95,6 +96,15 @@
       font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.05em;
+    }
+    .type-badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #cce5ff;
+      color: #004085;
     }
     .card-body {
       padding: 0.5rem 0.9rem 0.8rem;
@@ -151,6 +161,7 @@
     <a class="card" href="reader.html#migliora-da-oggi-il-tuo-italiano" data-lang="it">
       <div class="card-header">
         <span class="lang-badge" style="background:#d4edda;color:#155724">IT</span>
+        <span class="type-badge">email</span>
       </div>
       <div class="card-body">
         <h2 class="card-title">Migliora da OGGI il tuo italiano</h2>
@@ -164,6 +175,7 @@
     <a class="card" href="reader.html#il-programma-perfetto-per-te" data-lang="it">
       <div class="card-header">
         <span class="lang-badge" style="background:#d4edda;color:#155724">IT</span>
+        <span class="type-badge">email</span>
       </div>
       <div class="card-body">
         <h2 class="card-title">Il programma perfetto per te!</h2>
@@ -177,6 +189,7 @@
     <a class="card" href="reader.html#non-e-colpa-tua-non-preoccuparti" data-lang="it">
       <div class="card-header">
         <span class="lang-badge" style="background:#d4edda;color:#155724">IT</span>
+        <span class="type-badge">email</span>
       </div>
       <div class="card-body">
         <h2 class="card-title">NON è colpa tua, non preoccuparti!</h2>
@@ -190,6 +203,7 @@
     <a class="card" href="reader.html#hai-una-domanda-per-me-io-ne-ho-una-per-te" data-lang="it">
       <div class="card-header">
         <span class="lang-badge" style="background:#d4edda;color:#155724">IT</span>
+        <span class="type-badge">email</span>
       </div>
       <div class="card-body">
         <h2 class="card-title">Hai una domanda per me? Io ne ho una per te!</h2>
@@ -203,6 +217,7 @@
     <a class="card" href="reader.html#gli-studenti-amano-il-corso-sulle-preposizioni-sai-perche" data-lang="it">
       <div class="card-header">
         <span class="lang-badge" style="background:#d4edda;color:#155724">IT</span>
+        <span class="type-badge">email</span>
       </div>
       <div class="card-body">
         <h2 class="card-title">Gli studenti AMANO il corso sulle preposizioni, sai perché? </h2>
@@ -216,6 +231,7 @@
     <a class="card" href="reader.html#la-bicicleta" data-lang="es">
       <div class="card-header">
         <span class="lang-badge" style="background:#ffeeba;color:#856404">ES</span>
+        <span class="type-badge">song</span>
       </div>
       <div class="card-body">
         <h2 class="card-title">La Bicicleta</h2>
@@ -229,6 +245,7 @@
     <a class="card" href="reader.html#el-secreto-de-mateo" data-lang="es">
       <div class="card-header">
         <span class="lang-badge" style="background:#ffeeba;color:#856404">ES</span>
+        <span class="type-badge">story</span>
       </div>
       <div class="card-body">
         <h2 class="card-title">El Secreto de Mateo</h2>
@@ -278,7 +295,6 @@
         });
       });
 
-      // Apply filter from URL hash on load
       var hash = location.hash.replace('#', '');
       if (hash === 'es' || hash === 'it') {
         applyFilter(hash);

@@ -45,6 +45,8 @@ def publish_text(entry) -> None:
         "slug": slug,
         "title": entry.title,
         "author": entry.author,
+        "source": entry.source,
+        "text_type": entry.text_type,
         "language": entry.language,
         "word_count": entry.word_count or 0,
         "published_at": published_at,
@@ -69,6 +71,8 @@ def publish_index() -> None:
                 "slug": data.get("slug", ""),
                 "title": data.get("title", ""),
                 "author": data.get("author"),
+                "source": data.get("source"),
+                "text_type": data.get("text_type"),
                 "language": lang,
                 "word_count": data.get("word_count", 0),
                 "published_at": data.get("published_at", ""),
@@ -97,7 +101,12 @@ def _build_index_html(texts: list[dict]) -> str:
             slug = t["slug"]
             lang = t.get("language", "es")
             title = _h(t["title"])
-            author_html = f'<p class="card-author">{_h(t["author"])}</p>' if t.get("author") else ""
+            if t.get("author") and t.get("source"):
+                author_html = f'<p class="card-author"><a href="{_h(t["source"])}" target="_blank" rel="noopener">{_h(t["author"])}</a></p>'
+            elif t.get("author"):
+                author_html = f'<p class="card-author">{_h(t["author"])}</p>'
+            else:
+                author_html = ""
             word_count = t.get("word_count") or 0
             wc_html = f'<span class="card-meta">{word_count:,} words</span>' if word_count else ""
             pub_date = ""
@@ -110,10 +119,12 @@ def _build_index_html(texts: list[dict]) -> str:
             badge_color = "#856404" if lang == "es" else "#155724"
             badge_bg = "#ffeeba" if lang == "es" else "#d4edda"
             lang_flag = lang.upper()
+            type_badge = f'<span class="type-badge">{_h(t["text_type"])}</span>' if t.get("text_type") else ""
             cards_html += f"""
     <a class="card" href="reader.html#{slug}" data-lang="{lang}">
       <div class="card-header">
         <span class="lang-badge" style="background:{badge_bg};color:{badge_color}">{lang_flag}</span>
+        {type_badge}
       </div>
       <div class="card-body">
         <h2 class="card-title">{title}</h2>
@@ -217,6 +228,7 @@ def _build_index_html(texts: list[dict]) -> str:
     }}
     .card.hidden {{ display: none; }}
     .card-header {{ padding: 0.6rem 0.9rem 0; }}
+    .card-header {{ display: flex; align-items: center; gap: 0.4rem; }}
     .lang-badge {{
       display: inline-block;
       padding: 0.15rem 0.5rem;
@@ -224,6 +236,15 @@ def _build_index_html(texts: list[dict]) -> str:
       font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.05em;
+    }}
+    .type-badge {{
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #cce5ff;
+      color: #004085;
     }}
     .card-body {{
       padding: 0.5rem 0.9rem 0.8rem;

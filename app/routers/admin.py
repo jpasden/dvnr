@@ -134,11 +134,16 @@ async def admin_new_form(request: Request):
 # POST /admin/new — tokenize locally, save, redirect to confirm
 # ---------------------------------------------------------------------------
 
+TEXT_TYPES = ["story", "song", "dialogue", "email", "poem"]
+
+
 @router.post("/new")
 async def admin_new_submit(
     request: Request,
     title: str = Form(...),
     author: str = Form(""),
+    source: str = Form(""),
+    text_type: str = Form("story"),
     language: str = Form("es"),
     raw_text: str = Form(...),
     db: Session = Depends(get_db),
@@ -147,6 +152,8 @@ async def admin_new_submit(
 
     if language not in ("es", "it"):
         language = "es"
+    if text_type not in TEXT_TYPES:
+        text_type = "story"
 
     tokens = tokenize(raw_text)
     wc = count_words(raw_text)
@@ -156,6 +163,8 @@ async def admin_new_submit(
     entry = TextEntry(
         title=title,
         author=author.strip() if author.strip() else None,
+        source=source.strip() if source.strip() else None,
+        text_type=text_type,
         language=language,
         raw_text=raw_text,
         parsed_json=json.dumps(tokens, ensure_ascii=False),
@@ -193,6 +202,7 @@ async def admin_confirm(request: Request, text_id: int, db: Session = Depends(ge
         "tokens": tokens,
         "known_count": len(known),
         "unknown_count": len(unknown),
+        "text_types": TEXT_TYPES,
     })
 
 
@@ -290,6 +300,8 @@ async def admin_update_meta(
     text_id: int,
     title: str = Form(...),
     author: str = Form(""),
+    source: str = Form(""),
+    text_type: str = Form("story"),
     slug: str = Form(""),
     db: Session = Depends(get_db),
 ):
@@ -300,6 +312,8 @@ async def admin_update_meta(
 
     entry.title = title.strip() or entry.title
     entry.author = author.strip() if author.strip() else None
+    entry.source = source.strip() if source.strip() else None
+    entry.text_type = text_type if text_type in TEXT_TYPES else entry.text_type
     # Use provided slug if valid, otherwise derive from title
     cleaned_slug = re.sub(r"[^a-z0-9-]", "", slug.strip().lower())
     base_slug = cleaned_slug if cleaned_slug else slugify(entry.title)

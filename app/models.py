@@ -14,6 +14,8 @@ class TextEntry(Base):
     parsed_json = Column(Text, nullable=False)  # JSON blob (token array)
     slug = Column(Text, nullable=True, unique=True)  # URL-safe slug
     word_count = Column(Integer, nullable=True)
+    source = Column(Text, nullable=True)       # optional URL
+    text_type = Column(Text, nullable=True)    # story, song, dialogue, email, poem
     published_at = Column(DateTime, nullable=True)
     edited_tokens = Column(Text, nullable=True)  # JSON object: {token_idx: {field: value}}
     created_at = Column(DateTime, default=datetime.utcnow)
