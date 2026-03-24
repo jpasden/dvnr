@@ -101,9 +101,7 @@ def _build_index_html(texts: list[dict]) -> str:
             slug = t["slug"]
             lang = t.get("language", "es")
             title = _h(t["title"])
-            if t.get("author") and t.get("source"):
-                author_html = f'<p class="card-author"><a href="{_h(t["source"])}" target="_blank" rel="noopener">{_h(t["author"])}</a></p>'
-            elif t.get("author"):
+            if t.get("author"):
                 author_html = f'<p class="card-author">{_h(t["author"])}</p>'
             else:
                 author_html = ""

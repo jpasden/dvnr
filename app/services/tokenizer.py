@@ -47,15 +47,22 @@ def tokenize(text: str) -> list[dict]:
 
     tokens: list[dict] = []
     idx = 0
+    last_was_newline = False
     for part in raw_tokens:
         if part in ("\r\n", "\r", "\n"):
+            if last_was_newline:
+                continue  # skip blank lines
             tokens.append(_make_token(idx, "\n", is_newline=True))
+            last_was_newline = True
         elif part == " ":
             tokens.append(_make_token(idx, " ", is_space=True))
+            last_was_newline = False
         elif _PUNCT_RE.fullmatch(part):
             tokens.append(_make_token(idx, part, is_punct=True))
+            last_was_newline = False
         else:
             tokens.append(_make_token(idx, part))
+            last_was_newline = False
         idx += 1
 
     _mark_title(tokens)
